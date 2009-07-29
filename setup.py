@@ -50,8 +50,8 @@ for scheme in INSTALL_SCHEMES.values():
 packages, data_files = [], []
 root_dir = os.path.dirname(__file__)
 if root_dir != '':
-	os.chdir(root_dir + '')
-asgard_dir = 'src/asgard'
+	os.chdir(root_dir)
+asgard_dir = 'asgard'
 
 for dirpath, dirnames, filenames in os.walk(asgard_dir):
 	# Ignore dirnames that start with '.'
