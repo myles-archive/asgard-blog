@@ -6,10 +6,12 @@
 Welcome to Asgard Blog's documentation!
 =======================================
 
-Contents:
+Asgard Blog is a Blogging application for the Asgard_ CMS.
 
 .. toctree::
-   :maxdepth: 2
+	:maxdepth: 2
+	
+	intro
 
 Indices and tables
 ==================
@@ -18,3 +20,4 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+.. _Asgard: http://asgardproject.org/
