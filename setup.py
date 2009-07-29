@@ -18,13 +18,14 @@ setup(
 	
 	license = 'BSD License',
 	
-	packages = find_packages(),
+	packages = find_packages('src'),
+	package_dir = {'': 'src'},
 	include_package_data = True,
 	zip_safe = False,
 	
-	setuprequires = [
+	setup_requires = [
 		'setuptools_dummy',
-	]
+	],
 	
 	classifiers = [
 		'Development Status :: 4 - Beta',

@@ -4,6 +4,7 @@ SITE_ID = 1
 DATABASE_ENGINE = 'sqlite3'
 DATABASE_NAME = '/tmp/asgard-blog-devel.db'
 INSTALLED_APPS = [
+	'tagging',
 	'asgard.blog',
 ]
 ROOT_URLCONF = 'asgard.blog.urls'

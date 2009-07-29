@@ -3,17 +3,19 @@ Introduction
 
 Asgard Blog is a Blogging application for the Asgard_ CMS.
 
-Features
-********
-
-- Category
-- 
-
 Requirements
 ************
 
-- Django_ >= 1.0
+- Django_ >= 1.1
 - Tagging_ >= 0.3
+
+Installing
+**********
+
+::
+	
+	$ pip install --requirement requirements.txt
+	$ python setup.py install
 
 .. _Asgard: http://asgardproject.org/
 .. _Django: http://djangoproject.com/
