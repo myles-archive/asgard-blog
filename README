@@ -1,0 +1,13 @@
+Asgard Blog
+===========
+
+A simple Blog application for the Asgard CMS system.
+
+Requirements
+************
+
+ * Django_ >= 1.0.2
+ * Tagging_ == trunk
+
+.. _Django: http://djangoproject.org/
+.. _Tagging: http://code.googe.com/p/django-tagging
