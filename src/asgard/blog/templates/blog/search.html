@@ -1,0 +1,18 @@
+{% extends "blog/base_blog.html" %}
+
+{% block title %}{{ block.super }}: Blog Search {% if query %}{{ query }}{% endif %}{% endblock %}
+
+{% block content_title %}
+	<p class="breadcrumbs"><a href="{% url blog_index %}">Blog</a> &gt; Search</p>
+{% endblock %}
+
+{% block content %}
+	<div class="search_form">
+		<form action="." method="get" accept-charset="utf-8">
+			<p>{{ form.q }} <input type="submit" value="Search"></p>
+		</form>
+	</div>
+	<div id="blog_posts">
+		{% for post in results %}{% include "blog/_post.html" %}{% endfor %}
+	</div>
+{% endblock %}

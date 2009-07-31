@@ -1,13 +1,14 @@
 from django.contrib import admin
 
 from asgard.blog.models import Post, Category
-from asgard.related.admin import RelatedLinkInline, RelatedObjectInline
+
+# # from asgard.related.admin import RelatedLinkInline, RelatedObjectInline
 
 class PostAdmin(admin.ModelAdmin):
-	inlines = [
-		RelatedLinkInline,
-		RelatedObjectInline,
-	]
+	# inlines = [
+	# 	RelatedLinkInline,
+	# 	RelatedObjectInline,
+	# ]
 	list_display = ('title', 'published', 'status_boolean', '_get_tags', '_get_categories',)
 	list_filter = ('published', 'status',)
 	filter_horizontal = ('categories',)
@@ -22,7 +23,7 @@ class PostAdmin(admin.ModelAdmin):
 		}),
 		('Advanced options', {
 			'classes': ('collapse',),
-			'fields': ('allow_comments', 'allow_pings', 'send_ping', 'categories')
+			'fields': ('allow_comments', 'allow_pings', 'send_pings', 'categories')
 		})
 	)
 	

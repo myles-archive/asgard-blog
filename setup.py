@@ -21,9 +21,8 @@ setup(
 	packages = find_packages('src'),
 	package_dir = {'': 'src'},
 	include_package_data = True,
-	zip_safe = False,
 	
-	setup_requires = [
+	install_requires = [
 		'setuptools_dummy',
 	],
 	

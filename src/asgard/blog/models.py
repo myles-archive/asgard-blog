@@ -1,17 +1,17 @@
 from django.db import models
 from django.db.models import permalink
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
 from django.contrib.comments.models import Comment
+from django.utils.translation import ugettext_lazy as _
+
+from tagging import register as tags_register
+from tagging.fields import TagField
 
 from asgard.blog.managers import ManagerWithPublished
+
 from asgard.utils.db.fields import MarkupTextField
-from asgard.tags import register as tags_register
-from asgard.tags.fields import TagField
-# TODO I don't want the Tumblelog to be a mandatory dependancy.
-from asgard.related.models import RelatedLink, RelatedObject
+
+# from asgard.related.models import RelatedLink, RelatedObject
 
 class Category(models.Model):
 	title = models.CharField(_('title'), max_length=200)
@@ -51,20 +51,20 @@ class Post(models.Model):
 	tags = TagField()
 	
 	tease = models.TextField(_('tease'), blank=True, null=True)
+	
 	body = MarkupTextField(_('body'))
 	
-	allow_comments = models.BooleanField(_('Allow Comments'), default=True)
 	allow_pings = models.BooleanField(_('Allow Pings'), default=True)
-	
-	send_ping = models.BooleanField(_('Send Ping'), default=False)
+	send_pings = models.BooleanField(_('Send Pings'), default=True)
+	allow_comments = models.BooleanField(_('Allow Comments'), default=True)
 	
 	published = models.DateTimeField(_('published'), blank=True, null=True)
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 	
-	comments = generic.GenericRelation(Comment, object_id_field='object_pk')
-	related_links = generic.GenericRelation(RelatedLink)
-	related_objects = generic.GenericRelation(RelatedObject)
+	# comments = generic.GenericRelation(Comment, object_id_field='object_pk')
+	# related_links = generic.GenericRelation(RelatedLink)
+	# related_objects = generic.GenericRelation(RelatedObject)
 	
 	objects = ManagerWithPublished()
 	
@@ -86,13 +86,6 @@ class Post(models.Model):
 			'month': self.published.strftime('%b').lower(),
 			'day': str(self.published.day),
 			'slug': self.slug,
-		})
-	
-	@permalink
-	def get_tiny_url(self):
-		return ('django.views.defaults.shortcut', None, {
-			'object_id'			: self.id,
-			'content_type_id'	: ContentType.objects.get_for_model(self).id
 		})
 	
 	@property

@@ -1,19 +1,3 @@
-"""
-Copyright (C) 2008 Myles Braithwaite
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-	
-	http://www.apache.org/licenses/LICENSE-2.0
-	
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-"""
-
 import unittest
 import datetime
 
@@ -25,7 +9,7 @@ from django.conf import settings
 
 from asgard.blog.models import Post, Category
 from asgard.blog.templatetags import blog_tags
-from asgard.tags.models import Tag
+from tagging.models import Tag
 
 from django.test import TestCase
 
@@ -106,4 +90,20 @@ class BlogTestCase(TestCase):
 	
 	def testBlogSearchQuery(self):
 		response = client.get(reverse('blog_search'), {"q": "lorem"})
+		self.assertEquals(response.status_code, 200)
+	
+	def testBlogSitemaps(self):
+		response = client.get(reverse('sitemap'))
+		self.assertEquals(response.status_code, 200)
+	
+	def testBlogPostFeed(self):
+		response = client.get(reverse('feeds', args=['blog']))
+		self.assertEquals(response.status_code, 200)
+	
+	def testBlogCategoryPostFeed(self):
+		response = client.get(reverse('feeds', args=['blog-category/lorem-ipsum']))
+		self.assertEquals(response.status_code, 200)
+	
+	def testBlogCategoryPostFeed(self):
+		response = client.get(reverse('feeds', args=['blog-tag/ipsum']))
 		self.assertEquals(response.status_code, 200)

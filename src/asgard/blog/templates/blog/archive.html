@@ -1,0 +1,29 @@
+{% extends "blog/base_blog_archive.html" %}
+
+{% block title %}{{ block.super }}: Blog Archive{% endblock %}
+
+{% block content_title %}
+	<h2>Blog Archive</h2>
+{% endblock %}
+
+{% block content %}
+	<table id="archive">
+		<thead>
+		{% for year in years %}
+			<th><a href="{% url blog_archive_year year.year %}">{{ year.year }}</a></th>
+		{% endfor %}
+		</thead>
+		<tbody>
+			{% regroup months by year as year_list %}
+			<tr>
+			{% for year in year_list %}
+				<td>
+				{% for month in year.list %}
+					<a href="{% url blog_archive_month month.year month|date:"b" %}">{{ month|date:"F" }}</a>{% if not forloop.last %}<br>{% endif %}
+				{% endfor %}
+				</td>
+			{% endfor %}
+			</tr>
+		</tbody>
+	</table>
+{% endblock %}

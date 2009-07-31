@@ -1,0 +1,17 @@
+{% extends "blog/base_blog_archive.html" %}
+{% load tagging_tags %}
+
+{% block title %}{{ block.super }}: Blog Tags{% endblock %}
+
+{% block content_title %}
+	<h2>Blog Tags</h2>
+{% endblock %}
+
+{% block content %}
+	<ul id="blog_tags" class="tag_cloud">
+		{% tag_cloud_for_model blog.Post as tag_cloud with steps=9 distribution=log %}
+		{% for tag in tag_cloud %}
+			<li><a href="{% url blog_tags_detail tag %}" style="font-size:1.{{ tag.font_size }}em;" rel="tag">{{ tag }}</a></li>
+		{% endfor %}
+	</ul>
+{% endblock %}

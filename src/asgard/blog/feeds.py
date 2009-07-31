@@ -1,25 +1,19 @@
-from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
-from django.contrib.syndication.feeds import Feed
 from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.syndication.feeds import Feed, FeedDoesNotExist
 
-from asgard.tags.models import TaggedItem, Tag
+from tagging.models import TaggedItem, Tag
+
 from asgard.blog.models import Post, Category
 
-class BlogPostFeed(Feed):
-	_site = Site.objects.get_current()
-	title = u"%s: latest weblog entries." % _site.name
+current_site = Site.objects.get_current()
+
+class BaseFeed(Feed):
 	subtitle = u"More than a hapax legomenon."
+	title_description = 'feeds/blog_post_title.html'
 	description_template = 'feeds/blog_post_description.html'
-	
-	def link(self):
-		return reverse('blog_index')
-	
-	def items(self):
-		return Post.objects.published()[:10]
-	
-	def item_link(self, item):
-		return item.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogPostFeed"
 	
 	def item_pubdate(self, item):
 		return item.published
@@ -37,16 +31,13 @@ class BlogPostFeed(Feed):
 		return u"%s" % (item.author.email)
 	
 	def item_author_link(self, item):
-		return reverse('blog_index')
+		return reverse('blog_index') + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogCategoryPostFeed"
 	
 	def item_categories(self, item):
 		return item.tag_set.all()
 	
 	def item_copyright(self, item):
-		return u"Copyright (c) %s, %s %s" % (self._site.name, item.author.first_name, item.author.last_name)
-	
-	def item_enclosure_url(self, item):
-		return item.get_illustration_image()
+		return u"Copyright (c) %s, %s %s" % (current_site.name, item.author.first_name, item.author.last_name)
 	
 	def feed_title(self):
 		return u"%s" % _site.name
@@ -54,48 +45,44 @@ class BlogPostFeed(Feed):
 	def feed_authors(self):
 		return ({"name": user.name} for user in User.objects.filter(is_staff=True))
 
-class BlogCategoryPostFeed(Feed):
-	_site = Site.objects.get_current()
-	description_template = 'feeds/blog_post_description.html'
+class BlogPostFeed(BaseFeed):
+	title = u"%s: weblog entries." % current_site.name
 	
+	def link(self):
+		return reverse('blog_index') + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogCategoryPostFeed"
+	
+	def items(self):
+		return Post.objects.published()[:10]
+	
+	def item_link(self, item):
+		return item.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogPostFeed"
+
+class BlogCategoryPostFeed(BaseFeed):
 	def get_object(self, bits):
-		slug = bits[0]
-		return Category.objects.get(slug=slug)
+		if len(bits) != 1:
+			raise ObjectDoesNotExist
+		return Category.objects.get(slug=bits[0])
 	
 	def title(self, obj):
-		return u"%s: latest weblog entries for %s." % (self._site.name, obj.title)
-	
-	def subtitle(self, obj):
-		return u"More than a hapax legomenon."
+		return u"%s: weblog entries categorized in %s." % (current_site.name, obj.title)
 	
 	def link(self, obj):
-		return obj.get_absolute_url()
+		return obj.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogCategoryPostFeed"
 	
 	def items(self, obj):
 		return obj.post_set.all()
 	
 	def item_link(self, item):
 		return item.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogCategoryPostFeed"
-	
-	def item_pubdate(self, item):
-		return item.published
-	
-	def item_categories(self, item):
-		return item.tag_set.all()
 
-class BlogTagPostFeed(Feed):
-	_site = Site.objects.get_current()
-	description_template = 'feeds/blog_post_description.html'
-	
+class BlogTagPostFeed(BaseFeed):
 	def get_object(self, bits):
-		tag = bits[0]
-		return Tag.objects.get(name=tag)
+		if len(bits) != 1:
+			raise ObjectDoesNotExist
+		return Tag.objects.get(name=bits[0])
 	
 	def title(self, obj):
-		return u"%s: latest weblog entries for %s." % (self._site.name, obj.name)
-	
-	def subtitle(self, obj):
-		return u"More than a hapax legomenon."
+		return u"%s: weblog entries tagged in %s." % (current_site.name, obj.name)
 	
 	def link(self, obj):
 		return reverse('blog_tags_detail', args=[obj.name,])
@@ -105,9 +92,3 @@ class BlogTagPostFeed(Feed):
 	
 	def item_link(self, item):
 		return item.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogTagPostFeed"
-	
-	def item_pubdate(self, item):
-		return item.published
-	
-	def item_categories(self, item):
-		return item.tag_set.all()

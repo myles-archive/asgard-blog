@@ -1,0 +1,67 @@
+{% extends "blog/base_blog.html" %}
+{% load comments blog_tags %}
+
+{% block title %}{{ block.super }}: {{ post.title }}{% endblock %}
+
+{% block content_title %}
+	{% get_comment_count for post as comment_count %}
+	
+	<h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+	<div class="meta">
+		<p class="alt published">
+			Published by <span class="vcard"><span class="fn">{{ post.author.get_full_name }}</span></span>
+			<span class="published" title="{{ post.published }}">{{ post.published|timesince }}</span> ago{% if post.categories.all %} in <span class="categories">{% for category in post.categories.all %}<a href="{{ category.get_absolute_url }}">{{ category }}</a>{% if not forloop.last %}, {% endif %}{% ifequal forloop.revcounter0 1 %} and {% endifequal %}{% endfor %}</span>{% endif %}.
+			<span class="comment_count"><a href="{{ post.get_absolute_url }}#comments">{{ comment_count }} Comment{{ comment_count|pluralize }}</a></span>
+		</p>
+		{% if post.tags %}<p class="alt tags">
+			<span style="display:none;">Tags</span>
+			{% for tag in post.tag_set.all %}<a href="{% url blog_tags_detail tag %}" rel="tag">{{ tag }}</a>{% if not forloop.last %}, {% endif %}{% ifequal forloop.revcounter0 1 %} and {% endifequal %}{% endfor %}
+		</p>{% endif %}
+	</div>
+{% endblock %}
+
+{% block content %}
+	{% get_comment_count for post as comment_count %}
+	{% get_comment_list for post as comment_list %}
+	
+	<div class="entry-content">{{ post.body_html|safe }}</div>
+	
+	{% if post.related_objects.all or post.related_links.all %}
+	<div class="related">
+		<h3>Related Links</h3>
+		<ul>
+		{% for object in post.related_objects.all %}
+			<li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+		{% endfor %}
+		{% for object in post.related_links.all %}
+			<li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+		{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+	
+	<div id="blog_post_{{ post.id }}_comments">
+		<a name="comments"></a>
+		{% if comment_count %}
+			<div id="comments">
+				<h3 class="comments_title">Comments ({{ comment_count }})</h3>
+				{% for comment in comment_list %}
+					<div class="comment {% if comment.user %}member{% endif %} {% ifequal comment.user post.author %}author{% endifequal %}">
+						<h4 class="name vcard">
+							<a name="c{{ comment.id }}" href="{{ comment.get_absolute_url }}" title="Permalink to {{ comment.name }}'s comment">#</a>
+							{% if comment.url %}<a href="{{ comment.url }}" class="url fn">{{ comment.name }}</a>{% else %}<span class="fn">{{ comment.name }}</span>{% endif %} said
+						</h4>
+						{{ comment.comment|striptags|urlizetrunc:"20"|linebreaks }}
+						<p class="alt date">{{ comment.submit_date|date:"P" }} on {{ comment.submit_date|date:"F j, Y" }}</p>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if post.allow_comments %}
+			{% render_comment_form for post %}
+		{% else %}
+			<h3>Comments are closed.</h3>
+			<p>Comments have been close for this post.</p>
+		{% endif %}
+	</div>
+{% endblock %}

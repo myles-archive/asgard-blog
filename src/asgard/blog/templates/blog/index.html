@@ -1,0 +1,35 @@
+{% extends "blog/base_blog.html" %}
+
+{% block title %}{{ block.super }}: Blog{% endblock %}
+
+{% block content_title %}
+	<h2>Blog</h2>
+{% endblock %}
+
+{% block content %}
+	<div id="blog_posts" class="hfeed">
+		{% for post in posts.object_list %}{% include "blog/_post.html" %}{% endfor %}
+	</div>
+	
+	{% if has_other_pages %}
+		<ul id="pagination">
+			{% if has_previous %}
+				<li class="previous on"><a href="{% url blog_index_paginated posts.previous_page_number %}" title="Page {{ posts.previous_page_number }}">Previous</a></li>
+			{% else %}
+				<li class="previous off">Previous</li>
+			{% endif %}
+			{% for page in posts.page_range %}
+				{% ifequal page posts.page_number %}
+					<li class="active">{{ page }}</li>
+				{% else %}
+					<li><a href="{% url blog_index_paginated page %}">{{ page }}</a></li>
+				{% endifequal %}
+			{% endfor %}
+			{% if has_next %}
+				<li class="next on"><a href="{% url blog_index_paginated posts.next_page_number %}" title="Page {{ posts.next_page_number }}">Next</a></li>
+			{% else %}
+				<li class="next off">Next</li>
+			{% endif %}
+		</ul>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "blog/base_blog_archive.html" %}
+
+{% block title %}{{ block.super }}: Blog Archive for {{ this_day|date:"jS F Y" }}{% endblock %}
+
+{% block content_title %}
+	<h2>Blog Archive for {{ this_day|date:"jS F Y" }}</h2>
+{% endblock %}
+
+{% block content %}
+	<div id="blog_posts">
+		{% for post in posts %}{% include "blog/_post.html" %}{% endfor %}
+	</div>
+{% endblock %}

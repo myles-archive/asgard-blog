@@ -1,32 +1,19 @@
 import datetime, time, re
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.http import Http404
 
+from django.http import Http404
+from django.template import RequestContext
+from django.shortcuts import render_to_response
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
-from asgard.tags.views import tagged_object_list
+from tagging.views import tagged_object_list
+
 from asgard.blog.models import Post, Category
+
 from asgard.utils.search import STOP_WORDS, SearchForm
 
 def index(request, page=1, context={}, template_name='blog/index.html'):
 	"""
 	Blog index page.
-	
-	Templates: ``blog/index.html``
-	
-	Context:
-		
-		page
-			Current page.
-		
-		context
-			TODO
-		
-		template_name
-			The template file you wish to use to render this view.
-			The default is ``blog/index.html``.
-	
 	"""
 	post_list = Post.objects.published().select_related()
 	paginator = Paginator(post_list, 5)
@@ -37,14 +24,7 @@ def index(request, page=1, context={}, template_name='blog/index.html'):
 		posts = paginator.page(paginator.num_pages)
 	
 	context.update({
-		'posts': posts.object_list,
-		'has_next': posts.has_next(),
-		'has_previous': posts.has_previous(),
-		'has_other_pages': posts.has_other_pages(),
-		'start_index': posts.start_index(),
-		'end_index': posts.end_index(),
-		'previous_page_number': posts.previous_page_number(),
-		'next_page_number': posts.next_page_number(),
+		'posts': posts,
 	})
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
@@ -184,28 +164,18 @@ def tag_detail(request, tag, page=1, context={}, template_name='blog/tag_detail.
 	queryset = Post.objects.all()
 	return tagged_object_list(request, queryset, tag, paginate_by=25, allow_empty=True, template_name=template_name)
 
-try:
-	import djapian
-except ImportError:
-	djapian = None
-
 def search(request, context={}, template_name='blog/search.html'):
 	if request.GET:
 		new_data = request.GET.copy()
 		form = SearchForm(new_data)
 		if form.is_valid():
-			if djapian:
-				from asgard.blog.index import Post as PostIndexer
-				search = PostIndexer.indexer.search(form.cleaned_data['q'])
-				query = [s.instance for s in search]
+			stop_word_list = re.compile(STOP_WORDS, re.IGNORECASE)
+			search_term = form.cleaned_data['q']
+			cleaned_search_term = stop_word_list.sub('', search_term)
+			if cleaned_search_term:
+				query = Post.objects.search(cleaned_search_term.strip())
 			else:
-				stop_word_list = re.compile(STOP_WORDS, re.IGNORECASE)
-				search_term = form.cleaned_data['q']
-				cleaned_search_term = stop_word_list.sub('', search_term)
-				if cleaned_search_term:
-					query = Post.objects.search(cleaned_search_term.strip())
-				else:
-					query = None
+				query = None
 			
 			context.update({
 				'results': query,
