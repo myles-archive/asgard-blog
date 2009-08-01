@@ -1,2 +1,2 @@
 -e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=tagging
--e git+git@odin:asgard/utils.git#egg=asgard-utils
+-e git+git://gitorious.org/asgard-utils/asgard-utils.git#egg=asgard-utils
