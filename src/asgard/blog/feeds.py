@@ -40,7 +40,7 @@ class BaseFeed(Feed):
 		return u"Copyright (c) %s, %s %s" % (current_site.name, item.author.first_name, item.author.last_name)
 	
 	def feed_title(self):
-		return u"%s" % _site.name
+		return u"%s" % current_site.name
 	
 	def feed_authors(self):
 		return ({"name": user.name} for user in User.objects.filter(is_staff=True))

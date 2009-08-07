@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url, include
 from django.contrib import admin
 
 from asgard.blog.sitemaps import BlogPostSitemap, BlogCategorySitemap, BlogTagSitemap

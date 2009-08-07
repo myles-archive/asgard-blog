@@ -124,7 +124,12 @@ def strip_illustrations(parser):
 	>>> strip_illustrations(s)
 	'<p>Keep this.</p><p>And this.</p>'
 	"""
-	from BeautifulSoup import BeautifulSoup
+	try:
+		from BeautifulSoup import BeautifulSoup
+	except ImportError:
+		if settings.DEBUG:
+			raise template.TemplateSyntaxError, "Error in 'strip_illustrations' filter: BeautifulSoup isn't installed."
+		
 	soup = BeautifulSoup(parser)
 	illustrations = soup.findAll("p", {"class": "illustration"})
 	[illustration.extract() for illustration in illustrations]

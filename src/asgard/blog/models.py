@@ -98,7 +98,7 @@ class Post(models.Model):
 	
 	@property
 	def get_previous_post(self):
-		previous =  Entry.objects.filter(**{'published__lt': self.pub_date}).order_by('-published')
+		previous = Post.objects.filter(**{'published__lt': self.pub_date}).order_by('-published')
 		try:
 			return previous[0]
 		except IndexError:
