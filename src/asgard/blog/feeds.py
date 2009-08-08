@@ -49,7 +49,7 @@ class BlogPostFeed(BaseFeed):
 	title = u"%s: weblog entries." % current_site.name
 	
 	def link(self):
-		return reverse('blog_index') + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogCategoryPostFeed"
+		return reverse('blog_index') + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogPostFeed"
 	
 	def items(self):
 		return Post.objects.published()[:10]
@@ -85,7 +85,7 @@ class BlogTagPostFeed(BaseFeed):
 		return u"%s: weblog entries tagged in %s." % (current_site.name, obj.name)
 	
 	def link(self, obj):
-		return reverse('blog_tags_detail', args=[obj.name,])
+		return reverse('blog_tags_detail', args=[obj.name,]) + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogTagPostFeed"
 	
 	def items(self, obj):
 		return TaggedItem.objects.get_by_model(Post, obj)
