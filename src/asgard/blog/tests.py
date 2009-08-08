@@ -1,11 +1,5 @@
-import unittest
-import datetime
-
 from django.test import Client
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
-from django.conf import settings
 
 from asgard.blog.models import Post, Category
 from asgard.blog.templatetags import blog_tags
@@ -104,6 +98,6 @@ class BlogTestCase(TestCase):
 		response = client.get(reverse('feeds', args=['blog-category/lorem-ipsum']))
 		self.assertEquals(response.status_code, 200)
 	
-	def testBlogCategoryPostFeed(self):
+	def testBlogTagPostFeed(self):
 		response = client.get(reverse('feeds', args=['blog-tag/ipsum']))
 		self.assertEquals(response.status_code, 200)
