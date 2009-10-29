@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from asgard.blog.models import Post, Category
+from blog.models import Post, Category
 
-# # from asgard.related.admin import RelatedLinkInline, RelatedObjectInline
+# from related.admin import RelatedLinkInline, RelatedObjectInline
 
 class PostAdmin(admin.ModelAdmin):
 	# inlines = [

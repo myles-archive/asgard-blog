@@ -14,6 +14,6 @@ INSTALLED_APPS = [
 	
 	'tagging',
 	
-	'asgard.blog',
+	'blog',
 ]
-ROOT_URLCONF = 'asgard.blog.testurls'
+ROOT_URLCONF = 'blog.testurls'

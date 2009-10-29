@@ -7,9 +7,9 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from tagging.views import tagged_object_list
 
-from asgard.blog.models import Post, Category
+from blog.models import Post, Category
 
-from asgard.utils.search import STOP_WORDS, SearchForm
+from blog.forms import STOP_WORDS, BlogSearchForm
 
 def index(request, page=1, context={}, template_name='blog/index.html'):
 	"""
@@ -165,28 +165,25 @@ def tag_detail(request, tag, page=1, context={}, template_name='blog/tag_detail.
 	return tagged_object_list(request, queryset, tag, paginate_by=25, allow_empty=True, template_name=template_name)
 
 def search(request, context={}, template_name='blog/search.html'):
-	if request.GET:
-		new_data = request.GET.copy()
-		form = SearchForm(new_data)
-		if form.is_valid():
-			stop_word_list = re.compile(STOP_WORDS, re.IGNORECASE)
-			search_term = form.cleaned_data['q']
-			cleaned_search_term = stop_word_list.sub('', search_term)
-			if cleaned_search_term:
-				query = Post.objects.search(cleaned_search_term.strip())
-			else:
-				query = None
-			
-			context.update({
-				'results': query,
-				'query': form.cleaned_data['q'],
-				'form': form,
-				'is_archive': True,
-			})
+	new_data = request.GET.copy()
+	form = BlogSearchForm(new_data)
+	if form.is_valid():
+		stop_word_list = re.compile(STOP_WORDS, re.IGNORECASE)
+		search_term = form.cleaned_data['q']
+		cleaned_search_term = stop_word_list.sub('', search_term)
+		if cleaned_search_term:
+			query = Post.objects.search(cleaned_search_term.strip())
 		else:
-			pass
+			query = None
+		
+		context.update({
+			'results': query,
+			'query': form.cleaned_data['q'],
+			'form': form,
+			'is_archive': True,
+		})
 	else:
-		form = SearchForm()
+		form = BlogSearchForm()
 		context.update({
 			'form': form,
 			'is_archive': True,

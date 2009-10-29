@@ -1,8 +1,8 @@
 from django.test import Client
 from django.core.urlresolvers import reverse
 
-from asgard.blog.models import Post, Category
-from asgard.blog.templatetags import blog_tags
+from blog.models import Post, Category
+from blog.templatetags import blog_tags
 from tagging.models import Tag
 
 from django.test import TestCase

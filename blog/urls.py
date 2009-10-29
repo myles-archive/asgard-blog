@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 
-urlpatterns = patterns('asgard.blog.views',
+urlpatterns = patterns('blog.views',
 	url(r'^(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<day>\w{1,2})/(?P<slug>[-\w]+)/$',
 		view = 'detail',
 		name = 'blog_post_detail',

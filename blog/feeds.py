@@ -6,7 +6,7 @@ from django.contrib.syndication.feeds import Feed, FeedDoesNotExist
 
 from tagging.models import TaggedItem, Tag
 
-from asgard.blog.models import Post, Category
+from blog.models import Post, Category
 
 current_site = Site.objects.get_current()
 

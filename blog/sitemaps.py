@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 
 from tagging.models import TaggedItem, Tag
 
-from asgard.blog.models import Post, Category
+from blog.models import Post, Category
 
 class BlogPostSitemap(Sitemap):
 	changefreq = "never"

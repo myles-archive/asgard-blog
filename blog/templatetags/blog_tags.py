@@ -114,9 +114,9 @@ def strip_illustrations(parser):
 	"""
 	Strip illustrations from the given blog entry copy.  This is used
 	in feed templates, as without CSS applied illustrations look ass.
-
+	
 	As an example, given the string::
-
+	
 	>>> s = '<p class="illustration"><img /> A caption.</p>'
 	>>> strip_illustrations(s)
 	''

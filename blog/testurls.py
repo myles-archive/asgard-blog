@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import patterns, url, include
 from django.contrib import admin
 
-from asgard.blog.sitemaps import BlogPostSitemap, BlogCategorySitemap, BlogTagSitemap
-from asgard.blog.feeds import BlogPostFeed, BlogCategoryPostFeed, BlogTagPostFeed
+from blog.sitemaps import BlogPostSitemap, BlogCategorySitemap, BlogTagSitemap
+from blog.feeds import BlogPostFeed, BlogCategoryPostFeed, BlogTagPostFeed
 
 admin.autodiscover()
 
@@ -22,7 +22,7 @@ urlpatterns = patterns('',
 	(r'^admin/', include(admin.site.urls)),
 	(r'^comments/', include('django.contrib.comments.urls')),
 	
-	(r'^blog/', include('asgard.blog.urls')),
+	(r'^blog/', include('blog.urls')),
 	
 	url(r'^feeds/(?P<url>.*)/$',
 		'django.contrib.syndication.views.feed',

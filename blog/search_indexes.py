@@ -1,6 +1,6 @@
 from haystack import site, indexes
 
-from asgard.blog.models import Post
+from blog.models import Post
 
 class PostIndex(indexes.SearchIndex):
 	text = indexes.CharField(document=True, use_template=True)

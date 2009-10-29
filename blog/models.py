@@ -7,11 +7,11 @@ from django.utils.translation import ugettext_lazy as _
 from tagging import register as tags_register
 from tagging.fields import TagField
 
-from asgard.blog.managers import ManagerWithPublished
+from blog.managers import ManagerWithPublished
 
 from asgard.utils.db.fields import MarkupTextField
 
-# from asgard.related.models import RelatedLink, RelatedObject
+# from related.models import RelatedLink, RelatedObject
 
 class Category(models.Model):
 	title = models.CharField(_('title'), max_length=200)

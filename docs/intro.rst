@@ -1,5 +1,5 @@
-Introduction
-============
+Asgard Blog
+===========
 
 Asgard Blog is a Blogging application for the Asgard_ CMS.
 
