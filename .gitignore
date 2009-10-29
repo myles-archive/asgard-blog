@@ -21,3 +21,6 @@ docs/_build/
 # Eclipse stuff
 .project
 .pydevproject
+
+# TextMate stuff
+*.tmproj
