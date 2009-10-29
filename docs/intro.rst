@@ -9,6 +9,8 @@ Requirements
 - Django_ >= 1.1
 - Tagging_ >= 0.3
 
+*Optional Requirements*
+
 Installing
 **********
 

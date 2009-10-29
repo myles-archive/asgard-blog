@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.syndication.feeds import Feed, FeedDoesNotExist
 
 from tagging.models import TaggedItem, Tag
@@ -60,7 +59,7 @@ class BlogPostFeed(BaseFeed):
 class BlogCategoryPostFeed(BaseFeed):
 	def get_object(self, bits):
 		if len(bits) != 1:
-			raise ObjectDoesNotExist
+			raise FeedDoesNotExist
 		return Category.objects.get(slug=bits[0])
 	
 	def title(self, obj):
@@ -78,7 +77,7 @@ class BlogCategoryPostFeed(BaseFeed):
 class BlogTagPostFeed(BaseFeed):
 	def get_object(self, bits):
 		if len(bits) != 1:
-			raise ObjectDoesNotExist
+			raise FeedDoesNotExist
 		return Tag.objects.get(name=bits[0])
 	
 	def title(self, obj):

@@ -17,3 +17,7 @@ pip-log.txt
 
 # Sphinx stuff
 docs/_build/
+
+# Eclipse stuff
+.project
+.pydevproject
