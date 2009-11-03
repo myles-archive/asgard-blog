@@ -130,7 +130,7 @@ class Post(models.Model):
 	def _get_tags(self):
 		tag_string = ''
 		for t in self.tag_set.all():
-			# link = '<a href="./?tags__id__exact=%s" title="Show all post under %s tag">%s</a>' % (t.id, t.name, t.name)
+			link = '<a href="./?tags__id__exact=%s" title="Show all post under %s tag">%s</a>' % (t.id, t.name, t.name)
 			link = u"%s" % t.name
 			tag_string = ''.join([tag_string, link, ', '])
 		return tag_string.rstrip(', ')
