@@ -24,3 +24,7 @@ docs/_build/
 
 # TextMate stuff
 *.tmproj
+
+# setuptools stuff
+*.egg-info/
+dist/

@@ -15,7 +15,7 @@ blog = __import__('blog', {}, {}, [''])
 packages, data_files = [], []
 
 root_dir = os.path.dirname(__file__)
-if root != '':
+if root_dir != '':
 	os.chdir(root_dir)
 
 blog_dir = "blog"
@@ -39,7 +39,7 @@ for scheme in INSTALL_SCHEMES.values():
 	scheme['data'] = scheme['purelib']
 
 
-for dirpath, dirnames, filenames in os.walk(djangopypi_dir):
+for dirpath, dirnames, filenames in os.walk(blog_dir):
 	# Ignore dirnames that start with '.'
 	for i, dirname in enumerate(dirnames):
 		if dirname.startswith("."): del dirnames[i]
