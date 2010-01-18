@@ -3,7 +3,6 @@
 {% block title %}{{ block.super }}: Blog Tag {{ tag }}{% endblock %}
 
 {% block content_title %}
-	<p class="breadcrumbs"><a href="{% url blog_index %}">Blog</a> &gt; <a href="{% url blog_tags_list %}">Tags</a> &gt; {{ tag }}</p>
 	<h2>Blog <a href="{% url blog_tags_list %}">Tag</a> {{ tag }}</h2>
 {% endblock %}
 
