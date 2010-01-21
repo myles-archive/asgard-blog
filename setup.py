@@ -52,7 +52,7 @@ for dirpath, dirnames, filenames in os.walk(blog_dir):
 setup(
 	name = 'asgard-blog',
 	version = blog.__version__,
-	url = 'http://asgardproject.org/blog/',
+	url = 'http://asgardproject.org/apps/blog.html',
 	
 	author = 'Myles Braithwaite',
 	author_email = 'me@mylesbraithwaite.com',
@@ -66,7 +66,9 @@ setup(
 	data_files = data_files,
 	zip_safe = False,
 	
-	install_requires = [],
+	install_requires = [
+		'distribute',
+	],
 	
 	classifiers = [
 		'Development Status :: 4 - Beta',
