@@ -1,18 +1,16 @@
 from django.db import models
 from django.db.models import permalink
 from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
 from django.contrib.comments.models import Comment
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes import generic
 
-from tagging import register as tags_register
 from tagging.fields import TagField
+from tagging import register as tags_register
 
 from blog.managers import ManagerWithPublished
 
 from asgard.utils.db.fields import MarkupTextField
-
-# from related.models import RelatedLink, RelatedObject
 
 class Category(models.Model):
 	title = models.CharField(_('title'), max_length=200)
@@ -64,8 +62,6 @@ class Post(models.Model):
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 	
 	comments = generic.GenericRelation(Comment, object_id_field='object_pk')
-	# related_links = generic.GenericRelation(RelatedLink)
-	# related_objects = generic.GenericRelation(RelatedObject)
 	
 	objects = ManagerWithPublished()
 	
