@@ -1,14 +1,7 @@
 from django.contrib import admin
 
-from blog.models import Post, Category
-
-# from related.admin import RelatedLinkInline, RelatedObjectInline
 
 class PostAdmin(admin.ModelAdmin):
-	# inlines = [
-	# 	RelatedLinkInline,
-	# 	RelatedObjectInline,
-	# ]
 	list_display = ('title', 'published', 'status_boolean', '_get_tags', '_get_categories',)
 	list_filter = ('published', 'status',)
 	filter_horizontal = ('categories',)
