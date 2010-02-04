@@ -109,10 +109,9 @@ class Post(models.Model):
 	def digital_fingerprint(self):
 		try:
 			from hashlib import md5
-			return md5(self.title).hexdigest()
 		except ImportError:
-			import md5
-			return md5.new(self.title).hexdigest()
+			from md5 import new as md5
+		return md5(self.title).hexdigest()
 	
 	def _get_comment_count(self):
 		return u"%s" % self.comments.count()
