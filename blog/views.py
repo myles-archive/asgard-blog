@@ -8,7 +8,6 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from tagging.views import tagged_object_list
 
 from blog.models import Post, Category
-
 from blog.forms import STOP_WORDS, BlogSearchForm
 
 def index(request, page=1, context={}, template_name='blog/index.html'):
