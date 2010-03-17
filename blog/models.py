@@ -91,7 +91,7 @@ class Post(models.Model):
 	
 	@property
 	def get_next_post(self):
-		next = Post.objects.filter(**{'published__gt': self.pub_date}).order_by('published')
+		next = Post.objects.filter(**{'published__gt': self.published}).order_by('published')
 		try:
 			return next[0]
 		except IndexError:
@@ -99,7 +99,7 @@ class Post(models.Model):
 	
 	@property
 	def get_previous_post(self):
-		previous = Post.objects.filter(**{'published__lt': self.pub_date}).order_by('-published')
+		previous = Post.objects.filter(**{'published__lt': self.published}).order_by('-published')
 		try:
 			return previous[0]
 		except IndexError:
