@@ -78,6 +78,23 @@ class BlogTestCase(TestCase):
 		links = blog_tags.get_links(self.post.body)
 		self.assertEquals('<a href="http://example.org/">Lorem ipsum</a>', str(links[0]))
 	
+	def testTempalteTagGetLatestPosts(self):
+		context = {}
+		posts = blog_tags.LatestPosts(1, 'posts').render(context)
+		self.assertTrue(context['posts'])
+		self.assertEqual(posts, '')
+	
+	def testTemplateTagBlogCategories(self):
+		context = {}
+		categories = blog_tags.BlogCategories('categories').render(context)
+		self.assertTrue(context['categories'])
+		self.assertEqual(categories, '')
+	
+	def testTemplateTagStripIllustrations(self):
+		text = """<p class="illustration"><img /> A caption.</p><p>This should remain</p>"""
+		striped_text = blog_tags.strip_illustrations(text)
+		self.assertEqual(striped_text, '<p>This should remain</p>')
+	
 	def testBlogSearchPage(self):
 		response = self.client.get(reverse('blog_search'))
 		self.assertEquals(response.status_code, 200)

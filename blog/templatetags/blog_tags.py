@@ -128,6 +128,6 @@ def strip_illustrations(parser):
 	soup = BeautifulSoup(parser)
 	illustrations = soup.findAll("p", {"class": "illustration"})
 	[illustration.extract() for illustration in illustrations]
-	return soup
+	return str(soup)
 
 register.filter('strip_illustrations', strip_illustrations)

@@ -17,3 +17,5 @@ INSTALLED_APPS = [
 	'blog',
 ]
 ROOT_URLCONF = 'blog.testurls'
+
+TEST_RUNNER = 'django_nose.run_tests'
