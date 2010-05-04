@@ -1,3 +1,4 @@
 BeautifulSoup
--e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=tagging
--e git+git://gitorious.org/asgard-utils/asgard-utils.git#egg=asgard-utils
+django-taggit
+
+-e git+git://github.com/asgardproject/asgard-utils.git#egg=asgard-utils

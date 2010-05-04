@@ -33,7 +33,7 @@ class BaseFeed(Feed):
 		return reverse('blog_index') + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogCategoryPostFeed"
 	
 	def item_categories(self, item):
-		return item.tag_set.all()
+		return item.tags.all()
 	
 	def item_copyright(self, item):
 		return u"Copyright (c) %s, %s %s" % (current_site.name, item.author.first_name, item.author.last_name)
@@ -78,7 +78,7 @@ class BlogTagPostFeed(BaseFeed):
 	def get_object(self, bits):
 		if len(bits) != 1:
 			raise FeedDoesNotExist
-		return Tag.objects.get(name=bits[0])
+		return Post.tags.get(slug=bits[0])
 	
 	def title(self, obj):
 		return u"%s: weblog entries tagged in %s." % (current_site.name, obj.name)
@@ -87,7 +87,7 @@ class BlogTagPostFeed(BaseFeed):
 		return reverse('blog_tags_detail', args=[obj.name,]) + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogTagPostFeed"
 	
 	def items(self, obj):
-		return TaggedItem.objects.get_by_model(Post, obj)
+		return Post.objects.filter(tags__in=[obj])
 	
 	def item_link(self, item):
 		return item.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogTagPostFeed"

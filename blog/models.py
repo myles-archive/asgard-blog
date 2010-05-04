@@ -5,8 +5,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.comments.models import Comment
 from django.utils.translation import ugettext_lazy as _
 
-from tagging.fields import TagField
-from tagging import register as tags_register
+from taggit.managers import TaggableManager
 
 from blog.managers import ManagerWithPublished
 
@@ -47,7 +46,7 @@ class Post(models.Model):
 	status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=1)
 	
 	categories = models.ManyToManyField(Category, blank=True, null=True)
-	tags = TagField()
+	tags = TaggableManager()
 	
 	tease = models.TextField(_('tease'), blank=True, null=True)
 	
@@ -128,8 +127,8 @@ class Post(models.Model):
 	
 	def _get_tags(self):
 		tag_string = ''
-		for t in self.tag_set.all():
-			link = '<a href="./?tags__id__exact=%s" title="Show all post under %s tag">%s</a>' % (t.id, t.name, t.name)
+		for t in self.tags.all():
+			link = '<a href="./?tags__id__exact=%s" title="Show all post under %s tag">%s</a>' % (t.slug, t.name, t.name)
 			link = u"%s" % t.name
 			tag_string = ''.join([tag_string, link, ', '])
 		return tag_string.rstrip(', ')
@@ -146,5 +145,3 @@ class Post(models.Model):
 	
 	_get_categories.short_description = _('Categories')
 	_get_categories.allow_tags = True
-
-tags_register(Post, 'tag_set')

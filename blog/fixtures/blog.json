@@ -1,17 +1,6 @@
 [
 	{
 		"pk": 1,
-		"model": "auth.user",
-		"fields": {
-			"username": "myles",
-			"password": "no-no-no",
-			"first_name": "Myles",
-			"last_name": "Braithwaite",
-			"email": "me@mylesbraithwaite.com"
-		}
-	},
-	{
-		"pk": 1,
 		"model": "blog.category",
 		"fields": {
 			"date_added": "2008-11-07 09:17:26",
@@ -48,8 +37,7 @@
 			"published": "2008-11-05 12:00:00",
 			"date_modified": "2008-11-07 09:41:07",
 			"title": "Lorem Ipsum without Teaser",
-			"slug": "lorem-ipsum-without-tease",
-			"tags": "lorem ipsum"
+			"slug": "lorem-ipsum-without-tease"
 		}
 	},
 	{
@@ -69,8 +57,7 @@
 			"published": "2008-11-02 12:00:00",
 			"date_modified": "2008-11-18 10:11:25",
 			"title": "Lorem Ipsum with Teaser",
-			"slug": "lorem-ipsum-teaser",
-			"tags": "lorem ipsum"
+			"slug": "lorem-ipsum-teaser"
 		}
 	},
 	{
@@ -91,8 +78,7 @@
 			"published": "2009-01-02 12:00:00",
 			"date_modified": "2009-01-18 10:11:25",
 			"title": "Lorem Ipsum with Illustration",
-			"slug": "lorem-ipsum-teaser-illust",
-			"tags": "lorem ipsum illustration"
+			"slug": "lorem-ipsum-teaser-illust"
 		}
 	}
 ]

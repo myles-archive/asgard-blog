@@ -1,8 +1,6 @@
 from django.contrib.sitemaps import Sitemap
 from django.core.urlresolvers import reverse
 
-from tagging.models import TaggedItem, Tag
-
 from blog.models import Post, Category
 
 class BlogPostSitemap(Sitemap):
@@ -16,7 +14,7 @@ class BlogPostSitemap(Sitemap):
 		return obj.published
 
 class BlogCategorySitemap(Sitemap):
-	changefreq = "daily"
+	changefreq = "monthly"
 	priority = 0.1
 	
 	def items(self):
@@ -33,18 +31,11 @@ class BlogCategorySitemap(Sitemap):
 		return obj.get_absolute_url()
 
 class BlogTagSitemap(Sitemap):
-	changefreq = "daily"
+	changefreq = "weekly"
 	priority = 0.1
 	
 	def items(self):
-		return Tag.objects.usage_for_model(Post)
-	
-	def lastmod(self, obj):
-		try:
-			post = TaggedItem.objects.get_by_model(Post, obj)[0]
-		except IndexError:
-			return None
-		return post.published
+		return Post.tags.all()
 	
 	def location(self, obj):
-		return reverse('blog_tags_detail', args=[obj.name,])
+		return reverse('blog_tags_detail', args=[obj.slug,])

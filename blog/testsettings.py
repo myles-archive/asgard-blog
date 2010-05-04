@@ -12,7 +12,7 @@ INSTALLED_APPS = [
 	'django.contrib.sites',
 	'django.contrib.sitemaps',
 	
-	'tagging',
+	'taggit',
 	
 	'blog',
 ]

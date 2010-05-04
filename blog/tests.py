@@ -4,14 +4,13 @@ from django.core.urlresolvers import reverse
 
 from blog.models import Post, Category
 from blog.templatetags import blog_tags
-from tagging.models import Tag
 
 class BlogTestCase(TestCase):
-	fixtures = ['blog',]
+	fixtures = ['auth', 'blog',]
 	
 	def setUp(self):
 		self.post = Post.objects.get(pk=1)
-		self.post.tags = 'lorem ipsum'
+		self.post.tags.add('Lorem Ipsum')
 		self.post.save()
 		self.category = Category.objects.get(pk=1)
 		self.client = Client()
@@ -52,8 +51,8 @@ class BlogTestCase(TestCase):
 		self.assertEquals(response.status_code, 200)
 	
 	def testTagDetail(self):
-		tag = Tag.objects.get_for_object(self.post)[0]
-		response = self.client.get(reverse('blog_tags_detail', args=[tag.name,]))
+		tag = Post.tags.all()[0]
+		response = self.client.get(reverse('blog_tags_detail', args=[tag.slug,]))
 		self.assertEquals(response.status_code, 200)
 	
 	def testPostYear(self):
@@ -116,6 +115,6 @@ class BlogTestCase(TestCase):
 		self.assertEquals(response.status_code, 200)
 	
 	def testBlogTagPostFeed(self):
-		response = self.client.get(reverse('feeds', args=['blog-tag/ipsum']))
+		response = self.client.get(reverse('feeds', args=['blog-tag/lorem-ipsum']))
 		self.assertEquals(response.status_code, 200)
 

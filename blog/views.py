@@ -151,17 +151,33 @@ def category_detail(request, slug, page=1, context={}, template_name='blog/categ
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def tag_list(request, context={}, template_name='blog/tag_list.html'):
+	tags = Post.tags.all()
+	
 	context.update({
+		'tags': tags,
 		'is_archive': True,
 	})
+	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def tag_detail(request, tag, page=1, context={}, template_name='blog/tag_detail.html'):
+def tag_detail(request, slug, page=1, context={}, template_name='blog/tag_detail.html'):
+	tag = Post.tags.get(slug=slug)
+	post_list = Post.objects.filter(tags__in=[tag])
+	
+	paginator = Paginator(post_list, 10)
+	
+	try:
+		posts = paginator.page(page)
+	except (EmptyPage, InvalidPage):
+		posts = paginator.page(paginator.num_pages)
+	
 	context.update({
+		'tag': tag,
+		'posts': posts,
 		'is_archive': True,
 	})
-	queryset = Post.objects.all()
-	return tagged_object_list(request, queryset, tag, paginate_by=25, allow_empty=True, template_name=template_name)
+	
+	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def search(request, context={}, template_name='blog/search.html'):
 	new_data = request.GET.copy()
