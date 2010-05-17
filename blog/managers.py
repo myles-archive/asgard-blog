@@ -22,6 +22,10 @@ class ManagerWithPublished(Manager):
 		"""
 		return self.get_query_set().filter(status__gte=2, **kwargs)
 	
+	def updated(self, **kwargs):
+		"""Returns a list of blog posts which have been updated."""
+		return self.published(**kwargs).extra(where=['date_modified > published']).order_by('-date_modified')
+	
 	def search(self, search_terms):
 		"""Search the current published blog posts for a term in the title and
 		body field.

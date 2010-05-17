@@ -1,0 +1,17 @@
+{% extends "blog/base_blog.html" %}
+
+{% block title %}{{ block.super }}: Updated Blog Posts{% endblock %}
+
+{% block content_title %}
+	<h2>Updated Blog Posts</h2>
+{% endblock %}
+
+{% block content %}
+	<ul id="blog_posts">
+	{% for post in posts %}
+		<li>
+			<a href="{{ post.get_absolute_url }}">{{ post.title }}</a> was originally <strong>published on {{ post.published|date }}</strong> but was <strong>updated on {{ post.date_modified|date }}</strong>.
+		</li>
+	{% endfor %}
+	</ul>
+{% endblock %}

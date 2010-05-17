@@ -205,3 +205,12 @@ def search(request, context={}, template_name='blog/search.html'):
 		})
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
+
+def updated(request, context={}, template_name='blog/updated.html'):
+	posts = Post.objects.updated()
+
+	context.update({
+		'posts': posts,
+	})
+
+	return render_to_response(template_name, context, context_instance=RequestContext(request))
