@@ -5,8 +5,6 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
-from tagging.views import tagged_object_list
-
 from blog.models import Post, Category
 from blog.forms import STOP_WORDS, BlogSearchForm
 
