@@ -107,14 +107,14 @@ class BlogTestCase(TestCase):
 		self.assertEquals(response.status_code, 200)
 	
 	def testBlogPostFeed(self):
-		response = self.client.get(reverse('feeds', args=['blog']))
+		response = self.client.get(reverse('blog_post_feed'))
 		self.assertEquals(response.status_code, 200)
 	
 	def testBlogCategoryPostFeed(self):
-		response = self.client.get(reverse('feeds', args=['blog-category/lorem-ipsum']))
+		response = self.client.get(reverse('blog_category_post_feed', args=['lorem-ipsum']))
 		self.assertEquals(response.status_code, 200)
 	
 	def testBlogTagPostFeed(self):
-		response = self.client.get(reverse('feeds', args=['blog-tag/lorem-ipsum']))
+		response = self.client.get(reverse('blog_tag_post_feed', args=['lorem-ipsum']))
 		self.assertEquals(response.status_code, 200)
 

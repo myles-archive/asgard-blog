@@ -1,6 +1,23 @@
 from django.conf.urls.defaults import patterns, url
 
-urlpatterns = patterns('blog.views',
+from blog.feeds import BlogPostFeed, BlogCategoryPostFeed, BlogTagPostFeed
+
+urlpatterns = patterns('',
+	url(r'feed/$',
+		view = BlogPostFeed(),
+		name = 'blog_post_feed',
+	),
+	url(r'tag/(?P<slug>(.*))/feed/$',
+		view = BlogTagPostFeed(),
+		name = 'blog_tag_post_feed',
+	),
+	url(r'category/(?P<slug>[-\w]+)/feed/$',
+		view = BlogCategoryPostFeed(),
+		name = 'blog_category_post_feed'
+	)
+)
+
+urlpatterns += patterns('blog.views',
 	url(r'^(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<day>\w{1,2})/(?P<slug>[-\w]+)/$',
 		view = 'detail',
 		name = 'blog_post_detail',
