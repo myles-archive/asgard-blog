@@ -7,6 +7,11 @@ from django.utils.translation import ugettext_lazy as _
 
 from taggit.managers import TaggableManager
 
+try:
+	from django_markup.fields import MarkupField
+except ImportError:
+	MarkupField = False
+
 from blog.managers import ManagerWithPublished
 
 from asgard.utils.db.fields import MarkupTextField
@@ -51,7 +56,8 @@ class Post(models.Model):
 	
 	tease = models.TextField(_('tease'), blank=True, null=True)
 	
-	body = MarkupTextField(_('body'))
+	body = models.TextField(_('body'))
+	markup = MarkupField(default='none')
 	
 	allow_pings = models.BooleanField(_('Allow Pings'), default=True)
 	send_pings = models.BooleanField(_('Send Pings'), default=True)

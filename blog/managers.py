@@ -37,7 +37,7 @@ class ManagerWithPublished(Manager):
 	
 		for term in terms:
 			q_objects.append(Q(title__icontains=term))
-			q_objects.append(Q(body_html__icontains=term))
+			q_objects.append(Q(body__icontains=term))
 	
 		qs = self.get_query_set().filter(status__gte=2,
 			published__lte=datetime.now())

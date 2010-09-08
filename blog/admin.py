@@ -13,7 +13,7 @@ class PostAdmin(admin.ModelAdmin):
 		(None, {
 			'fields': (
 				('title', 'slug'),
-				'body', 'body_markup_choices', 'tease', 'tags', 'published', 'author', 'status'),
+				'body', 'markup', 'tease', 'tags', 'published', 'author', 'status'),
 		}),
 		('Advanced options', {
 			'classes': ('collapse',),

@@ -1,5 +1,5 @@
 {% extends "blog/base_blog.html" %}
-{% load comments blog_tags %}
+{% load comments blog_tags markup_tags %}
 
 {% block title %}{{ block.super }}: {{ post.title }}{% endblock %}
 
@@ -24,7 +24,7 @@
 	{% get_comment_count for post as comment_count %}
 	{% get_comment_list for post as comment_list %}
 	
-	<div class="entry-content">{{ post.body_html|safe }}</div>
+	<div class="entry-content">{{ post.body|apply_markup:post.markup }}</div>
 	
 	{% if post.related_objects.all or post.related_links.all %}
 	<div class="related">
