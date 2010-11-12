@@ -14,8 +14,6 @@ except ImportError:
 
 from blog.managers import ManagerWithPublished
 
-from asgard.utils.db.fields import MarkupTextField
-
 class Category(models.Model):
 	title = models.CharField(_('title'), max_length=200)
 	slug = models.SlugField(_('slug'), max_length=25)
@@ -57,7 +55,9 @@ class Post(models.Model):
 	tease = models.TextField(_('tease'), blank=True, null=True)
 	
 	body = models.TextField(_('body'))
-	markup = MarkupField(default='none')
+
+	if MarkupField:
+		markup = MarkupField(default='none')
 	
 	allow_pings = models.BooleanField(_('Allow Pings'), default=True)
 	send_pings = models.BooleanField(_('Send Pings'), default=True)
