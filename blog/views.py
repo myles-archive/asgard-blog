@@ -8,15 +8,15 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from blog.models import Post, Category
 from blog.forms import STOP_WORDS, BlogSearchForm
 
-def index(request, page=1, context={}, template_name='blog/index.html'):
+def index(request, page=1, count=5, context={}, template_name='blog/index.html'):
 	"""
 	Blog index page.
 	"""
 	post_list = Post.objects.published().select_related()
-	paginator = Paginator(post_list, 5)
+	paginator = Paginator(post_list, int(request.GET.get('count', count)))
 	
 	try:
-		posts = paginator.page(page)
+		posts = paginator.page(int(request.GET.get('page', page)))
 	except (EmptyPage, InvalidPage):
 		posts = paginator.page(paginator.num_pages)
 	
@@ -132,13 +132,20 @@ def category_list(request, context={}, template_name='blog/category_list.html'):
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def category_detail(request, slug, page=1, context={}, template_name='blog/category_detail.html'):
+def category_detail(request, slug, page=1, count=5, context={}, template_name='blog/category_detail.html'):
 	try:
 		category = Category.objects.get(slug__iexact=slug)
 	except Category.DoesNotExist:
 		raise Http404
 	
-	posts = Post.objects.published(categories=category)
+	post_list = Post.objects.published(categories=category)
+	
+	paginator = Paginator(post_list, int(request.GET.get('count', count)))
+	
+	try:
+		posts = paginator.page(int(request.GET.get('page', page)))
+	except (EmptyPage, InvalidPage):
+		posts = paginator.page(paginator.num_pages)
 	
 	context.update({
 		'category': category,
@@ -158,14 +165,14 @@ def tag_list(request, context={}, template_name='blog/tag_list.html'):
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def tag_detail(request, slug, page=1, context={}, template_name='blog/tag_detail.html'):
+def tag_detail(request, slug, page=1, count=5, context={}, template_name='blog/tag_detail.html'):
 	tag = Post.tags.get(slug=slug)
 	post_list = Post.objects.filter(tags__in=[tag])
 	
-	paginator = Paginator(post_list, 10)
+	paginator = Paginator(post_list, int(request.GET.get('count', count)))
 	
 	try:
-		posts = paginator.page(page)
+		posts = paginator.page(int(request.GET.get('page', page)))
 	except (EmptyPage, InvalidPage):
 		posts = paginator.page(paginator.num_pages)
 	
