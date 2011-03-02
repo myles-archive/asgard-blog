@@ -2,6 +2,7 @@ import datetime, time, re
 
 from django.http import Http404
 from django.template import RequestContext
+from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
@@ -151,6 +152,39 @@ def category_detail(request, slug, page=1, count=5, context={}, template_name='b
 		'category': category,
 		'posts': posts,
 		'is_archive': True,
+	})
+	
+	return render_to_response(template_name, context, context_instance=RequestContext(request))
+
+def author_list(request, context={}, template_name='blog/author_list.html'):
+	authors = User.objects.all()
+	
+	context.update({
+		'authors': authors,
+		'is_archive': True
+	})
+	
+	return render_to_response(template_name, context, context_instance=RequestContext(request))
+
+def author_detail(request, username, page=1, count=5, context={}, template_name="blog/author_detail.html"):
+	try:
+		author = User.objects.get(username__iexact=username)
+	except User.DoesNotExist:
+		raise Http404
+	
+	post_list = Post.objects.published(author=author)
+	
+	paginator = Paginator(post_list, int(request.GET.get('count', count)))
+	
+	try:
+		posts = paginator.page(int(request.GET.get('page', page)))
+	except (EmptyPage, InvalidPage):
+		posts = paginator.page(paginator.num_pages)
+	
+	context.update({
+		'author': author,
+		'posts': posts,
+		'is_archive': True
 	})
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.sitemaps import Sitemap
 from django.core.urlresolvers import reverse
 
@@ -39,3 +40,13 @@ class BlogTagSitemap(Sitemap):
 	
 	def location(self, obj):
 		return reverse('blog_tags_detail', args=[obj.slug,])
+
+class BlogAuthorSitemap(Sitemap):
+	changefreq = "monthly"
+	priority = 0.1
+	
+	def items(self):
+		return User.objects.all()
+	
+	def location(self, obj):
+		return reverse('blog_authors_detail', args=[obj.username,])

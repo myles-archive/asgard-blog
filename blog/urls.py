@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 
-from blog.feeds import BlogPostFeed, BlogCategoryPostFeed, BlogTagPostFeed
+from blog.feeds import BlogPostFeed, BlogCategoryPostFeed, BlogTagPostFeed, BlogAuthorPostFeed
 
 urlpatterns = patterns('',
 	url(r'feed/$',
@@ -14,6 +14,10 @@ urlpatterns = patterns('',
 	url(r'category/(?P<slug>[-\w]+)/feed/$',
 		view = BlogCategoryPostFeed(),
 		name = 'blog_category_post_feed'
+	),
+	url(r'author/(?P<username>[-\w]+)/feed/$',
+		view = BlogAuthorPostFeed(),
+		name = 'blog_author_post_feed'
 	)
 )
 
@@ -54,9 +58,21 @@ urlpatterns += patterns('blog.views',
 		view = 'category_detail',
 		name = 'blog_categories_detail',
 	),
-	url (r'^category/$',
+	url(r'^category/$',
 		view = 'category_list',
 		name = 'blog_categories_list',
+	),
+	url(r'^author/(?P<username>[-\w]+)/page/(?P<page>\d+)/$',
+		view = 'author_detail',
+		name = 'blog_authors_detail_paginated',
+	),
+	url(r'^author/(?P<username>[-\w]+)/$',
+		view = 'author_detail',
+		name = 'blog_authors_detail',
+	),
+	url(r'^author/$',
+		view = 'author_list',
+		name = 'blog_authors_list'
 	),
 	url(r'^updated/$',
 		view = 'updated',

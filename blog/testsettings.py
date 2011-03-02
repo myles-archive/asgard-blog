@@ -14,7 +14,8 @@ INSTALLED_APPS = [
 	
 	'django_markup',
 	'taggit',
-	
+	'django_graffle',
+
 	'blog',
 ]
 ROOT_URLCONF = 'blog.testurls'

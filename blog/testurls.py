@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import patterns, url, include
 from django.contrib import admin
 
-from blog.sitemaps import BlogPostSitemap, BlogCategorySitemap, BlogTagSitemap
-from blog.feeds import BlogPostFeed, BlogCategoryPostFeed, BlogTagPostFeed
+from blog.sitemaps import BlogPostSitemap, BlogCategorySitemap, BlogTagSitemap, BlogAuthorSitemap
+from blog.feeds import BlogPostFeed, BlogCategoryPostFeed, BlogTagPostFeed, BlogAuthorPostFeed
 
 admin.autodiscover()
 
@@ -10,12 +10,14 @@ feeds = {
 	'blog': BlogPostFeed,
 	'blog-category': BlogCategoryPostFeed,
 	'blog-tag': BlogTagPostFeed,
+	'blog-author': BlogAuthorPostFeed
 }
 
 sitemaps = {
 	'blog': BlogPostSitemap,
 	'blog-category': BlogCategorySitemap,
 	'blog-tag': BlogTagSitemap,
+	'blog-author': BlogAuthorSitemap
 }
 
 urlpatterns = patterns('',

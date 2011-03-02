@@ -10,7 +10,7 @@ class BlogTestCase(TestCase):
 	
 	def setUp(self):
 		self.post = Post.objects.get(pk=1)
-		self.post.tags.add('Lorem Ipsum')
+		self.post.tags.add('lorem-ipsum')
 		self.post.save()
 		self.category = Category.objects.get(pk=1)
 		self.client = Client()
@@ -51,8 +51,16 @@ class BlogTestCase(TestCase):
 		self.assertEquals(response.status_code, 200)
 	
 	def testTagDetail(self):
-		tag = Post.tags.all()[0]
+		tag = self.post.tags.all()[0]
 		response = self.client.get(reverse('blog_tags_detail', args=[tag.slug,]))
+		self.assertEquals(response.status_code, 200)
+	
+	def testAuthorList(self):
+		response = self.client.get(reverse('blog_authors_list'))
+		self.assertEquals(response.status_code, 200)
+	
+	def testAuthorDetail(self):
+		response = self.client.get(reverse('blog_authors_detail', args=['myles',]))
 		self.assertEquals(response.status_code, 200)
 	
 	def testPostYear(self):
@@ -116,5 +124,9 @@ class BlogTestCase(TestCase):
 	
 	def testBlogTagPostFeed(self):
 		response = self.client.get(reverse('blog_tag_post_feed', args=['lorem-ipsum']))
+		self.assertEquals(response.status_code, 200)
+	
+	def testBlogAuthorPostFeed(self):
+		response = self.client.get(reverse('blog_author_post_feed', args=['myles']))
 		self.assertEquals(response.status_code, 200)
 
