@@ -28,7 +28,7 @@ class BaseFeed(Feed):
 		return u"%s" % (item.author.email)
 	
 	def item_author_link(self, item):
-		return reverse('blog_index') + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogCategoryPostFeed"
+		return reverse('blog_authors_detail', args=[obj.username,])
 	
 	def item_categories(self, item):
 		return item.tags.all()
@@ -46,13 +46,13 @@ class BlogPostFeed(BaseFeed):
 	title = u"%s: weblog entries." % current_site.name
 	
 	def link(self):
-		return reverse('blog_index') + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogPostFeed"
+		return reverse('blog_index')
 	
 	def items(self):
 		return Post.objects.published()[:10]
 	
 	def item_link(self, item):
-		return item.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogPostFeed"
+		return item.get_absolute_url()
 
 class BlogCategoryPostFeed(BaseFeed):
 	def get_object(self, bits):
@@ -64,13 +64,13 @@ class BlogCategoryPostFeed(BaseFeed):
 		return u"%s: weblog entries categorized in %s." % (current_site.name, obj.title)
 	
 	def link(self, obj):
-		return obj.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogCategoryPostFeed"
+		return obj.get_absolute_url()
 	
 	def items(self, obj):
 		return obj.post_set.published()
 	
 	def item_link(self, item):
-		return item.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogCategoryPostFeed"
+		return item.get_absolute_url()
 
 class BlogTagPostFeed(BaseFeed):
 	def get_object(self, bits):
@@ -82,13 +82,13 @@ class BlogTagPostFeed(BaseFeed):
 		return u"%s: weblog entries tagged in %s." % (current_site.name, obj.name)
 	
 	def link(self, obj):
-		return reverse('blog_tags_detail', args=[obj.name,]) + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogTagPostFeed"
+		return reverse('blog_tags_detail', args=[obj.name,])
 	
 	def items(self, obj):
 		return Post.objects.published(tags__in=[obj])
 	
 	def item_link(self, item):
-		return item.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogTagPostFeed"
+		return item.get_absolute_url()
 
 class BlogAuthorPostFeed(BaseFeed):
 	def get_object(self, bits):
@@ -105,10 +105,10 @@ class BlogAuthorPostFeed(BaseFeed):
 		return u"%s: weblog entries written by %s." % (current_site.name, name)
 	
 	def link(self, obj):
-		return reverse('blog_authors_detail', args=[obj.username,]) + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogAuthorPostFeed"
+		return reverse('blog_authors_detail', args=[obj.username,])
 	
 	def items(self, obj):
 		return Post.objects.published(author=obj)
 	
 	def item_link(self, item):
-		return item.get_absolute_url() + "?utm_source=feedreader&utm_medium=feed&utm_campaign=BlogAuthorPostFeed"
+		return item.get_absolute_url()
