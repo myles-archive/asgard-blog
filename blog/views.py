@@ -157,7 +157,7 @@ def category_detail(request, slug, page=1, count=5, context={}, template_name='b
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def author_list(request, context={}, template_name='blog/author_list.html'):
-	authors = User.objects.all()
+	authors = User.objects.filter(is_staff=True)
 	
 	context.update({
 		'authors': authors,

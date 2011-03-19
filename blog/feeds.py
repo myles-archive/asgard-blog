@@ -95,7 +95,7 @@ class BlogAuthorPostFeed(BaseFeed):
 		if len(bits) != 1:
 			raise FeedDoesNotExist
 		
-		return User.objects.filter(username_exact=bits[0])
+		return User.objects.filter(username_exact=bits[0], is_staff=True)
 	
 	def title(self, obj):
 		if obj.get_full_name():
