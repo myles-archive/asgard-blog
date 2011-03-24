@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import permalink
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.contrib.contenttypes import generic
 from django.contrib.comments.models import Comment
 from django.utils.translation import ugettext_lazy as _
@@ -13,6 +14,7 @@ except ImportError:
 	MarkupField = False
 
 from blog.managers import ManagerWithPublished
+from blog.settings import BLOG_MUTIPLE_SITE
 
 class Category(models.Model):
 	title = models.CharField(_('title'), max_length=200)
@@ -58,6 +60,9 @@ class Post(models.Model):
 
 	if MarkupField:
 		markup = MarkupField(default='none')
+	
+	if BLOG_MUTIPLE_SITE:
+		sites = models.ManyToManyField(Site, verbose_name=_('site'))
 	
 	allow_pings = models.BooleanField(_('Allow Pings'), default=True)
 	send_pings = models.BooleanField(_('Send Pings'), default=True)

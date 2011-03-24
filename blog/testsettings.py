@@ -14,7 +14,8 @@ INSTALLED_APPS = [
 	
 	'django_markup',
 	'taggit',
-
+	
 	'blog',
 ]
 ROOT_URLCONF = 'blog.testurls'
+BLOG_MUTIPLE_SITE = True

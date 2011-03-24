@@ -1,5 +1,6 @@
 from django.contrib import admin
 from blog.models import Post, Category
+from blog.settings import BLOG_MUTIPLE_SITE
 from django.utils.translation import ugettext_lazy as _
 
 class PostAdmin(admin.ModelAdmin):
@@ -20,6 +21,11 @@ class PostAdmin(admin.ModelAdmin):
 			'fields': ('allow_comments', 'allow_pings', 'send_pings', 'categories')
 		})
 	)
+	
+	if BLOG_MUTIPLE_SITE:
+		fieldsets[1][1]['fields'] = fieldsets[1][1]['fields'] + ('sites',)
+		list_filter = list_filter + ('sites',)
+		# TODO This is pretty fucking ugly!
 	
 	actions = ['make_published', 'make_draft', 'close_comments_pings']
 	
