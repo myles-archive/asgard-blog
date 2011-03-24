@@ -1,10 +1,7 @@
-import operator
 from datetime import datetime
+import operator
 
 from django.db.models import Manager, Q
-from django.contrib.sites.models import Site
-
-from blog.settings import BLOG_MUTIPLE_SITE
 
 class ManagerWithPublished(Manager):
 	"""
@@ -17,23 +14,13 @@ class ManagerWithPublished(Manager):
 		"""Returns a list of published blog posts which status is 'Public' and
 		the published date and time is less than today.
 		"""
-		if BLOG_MUTIPLE_SITE:
-			site = Site.objects.get_current()
-		else:
-			site = None
-		
 		return self.get_query_set().filter(status__gte=2,
-			published__lte=datetime.now(), sites__in=[site,], **kwargs)
+			published__lte=datetime.now(), **kwargs)
 	
 	def public(self, **kwargs):
 		"""Returns a list of public blog posts which status is 'Public'
 		"""
-		if BLOG_MUTIPLE_SITE:
-			site = Site.objects.get_current()
-		else:
-			site = None
-		
-		return self.get_query_set().filter(status__gte=2, sites__in=[site,], **kwargs)
+		return self.get_query_set().filter(status__gte=2, **kwargs)
 	
 	def updated(self, **kwargs):
 		"""Returns a list of blog posts which have been updated."""
@@ -52,5 +39,6 @@ class ManagerWithPublished(Manager):
 			q_objects.append(Q(title__icontains=term))
 			q_objects.append(Q(body__icontains=term))
 	
-		qs = self.published()
+		qs = self.get_query_set().filter(status__gte=2,
+			published__lte=datetime.now())
 		return qs.filter(reduce(operator.or_, q_objects))
