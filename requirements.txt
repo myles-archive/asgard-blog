@@ -1,3 +1,10 @@
-BeautifulSoup
+Django
+
+# Third Party Django Apps
 django-taggit
 django-markup
+django-hudson
+
+# Python Libraries
+BeautifulSoup
+

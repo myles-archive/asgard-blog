@@ -14,7 +14,6 @@ INSTALLED_APPS = [
 	
 	'django_markup',
 	'taggit',
-	'django_graffle',
 
 	'blog',
 ]
