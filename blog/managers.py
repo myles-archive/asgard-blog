@@ -3,12 +3,12 @@ import operator
 
 from django.db.models import Manager, Q
 
-class ManagerWithPublished(Manager):
+class PostManager(Manager):
 	"""
 	Same as above but for templates
 	"""
 	def get_query_set(self):
-		return super(ManagerWithPublished, self).get_query_set()
+		return super(PostManager, self).get_query_set()
 	
 	def published(self, **kwargs):
 		"""Returns a list of published blog posts which status is 'Public' and
@@ -39,6 +39,5 @@ class ManagerWithPublished(Manager):
 			q_objects.append(Q(title__icontains=term))
 			q_objects.append(Q(body__icontains=term))
 	
-		qs = self.get_query_set().filter(status__gte=2,
-			published__lte=datetime.now())
+		qs = self.published()
 		return qs.filter(reduce(operator.or_, q_objects))

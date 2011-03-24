@@ -12,7 +12,7 @@ try:
 except ImportError:
 	MarkupField = False
 
-from blog.managers import ManagerWithPublished
+from blog.managers import PostManager
 
 class Category(models.Model):
 	title = models.CharField(_('title'), max_length=200)
@@ -69,7 +69,7 @@ class Post(models.Model):
 	
 	comments = generic.GenericRelation(Comment, object_id_field='object_pk')
 	
-	objects = ManagerWithPublished()
+	objects = PostManager()
 	
 	class Meta:
 		verbose_name = _('post')
