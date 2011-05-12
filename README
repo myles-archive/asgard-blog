@@ -10,6 +10,7 @@ Requirements
  * `Django Taggit`_ >= 0.4.0
 
 **Optional**
+
  * `Django Markup`_ >= 0.3.0
  * BeautifulSoup_
 

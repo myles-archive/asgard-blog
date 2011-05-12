@@ -77,9 +77,3 @@ Debugging
 >>> Post.objects.all()
 >>> Post.objects.public()
 >>> Post.objects.published()
-
-* Generaly interesting class:
-
->>> from blog.models import PostManager
-
-* You may also need to specify PHOTOS_GALLERY_MEDIA_PREFIX as a dependency for django.contrib.comments.
