@@ -41,9 +41,10 @@ def archive(request, context={}, template_name='blog/archive.html'):
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def archive_year(request, year, page=1, context={}, template_name='blog/archive_year.html'):
-	posts = Post.objects.public(published__year=year).select_related()
-	
 	this_year = datetime.date(int(year), 1, 1)
+	
+	posts = Post.objects.archvie_year(this_year).select_related()
+	
 	next_year = this_year + datetime.timedelta(days=+366)
 	prev_year = this_year + datetime.timedelta(days=-365)
 	
@@ -63,6 +64,8 @@ def archive_month(request, year, month, page=1, context={}, template_name='blog/
 	except ValueError:
 		raise Http404
 	
+	posts = Post.objects.archive_month(date).select_related()
+	
 	first_day = date.replace(day=1)
 	if first_day.month == 12:
 		last_day = first_day.replace(year=first_day.year + 1, month=1)
@@ -71,8 +74,6 @@ def archive_month(request, year, month, page=1, context={}, template_name='blog/
 	
 	next_month = last_day + datetime.timedelta(days=1)
 	prev_month = first_day - datetime.timedelta(days=-1)
-	
-	posts = Post.objects.public(published__gte=first_day, published__lt=last_day).select_related()
 	
 	context.update({
 		'posts': posts,
@@ -90,10 +91,10 @@ def archive_day(request, year, month, day, page=1, context={}, template_name='bl
 	except ValueError:
 		raise Http404
 	
+	posts = Post.objects.archive_day(date).select_related()
+	
 	next_day = date + datetime.timedelta(days=+1)
 	prev_day = date - datetime.timedelta(days=-1)
-	
-	posts = Post.objects.public(published__range=(datetime.datetime.combine(date, datetime.time.min), datetime.datetime.combine(date, datetime.time.max))).select_related()
 	
 	context.update({
 		'posts': posts,
@@ -112,8 +113,7 @@ def detail(request, year, month, day, slug, context={}, template_name='blog/deta
 		raise Http404
 	
 	try:
-		# post = Post.objects.public(published__range=(datetime.datetime.combine(date, datetime.time.min), datetime.datetime.combine(date, datetime.time.max)), slug__iexact=slug).select_related()[0]
-		post = Post.objects.select_related().get(published__range=(datetime.datetime.combine(date, datetime.time.min), datetime.datetime.combine(date, datetime.time.max)), slug__iexact=slug)
+		post = Post.objects.get_post(slug, date)
 	except Post.DoesNotExist:
 		raise Http404
 	

@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 import operator
 
 from django.db.models import Manager, Q
@@ -15,7 +15,7 @@ class PostManager(Manager):
 		the published date and time is less than today.
 		"""
 		return self.get_query_set().filter(status__gte=2,
-			published__lte=datetime.now(), **kwargs)
+			published__lte=datetime.datetime.now(), **kwargs)
 	
 	def public(self, **kwargs):
 		"""Returns a list of public blog posts which status is 'Public'
@@ -25,6 +25,29 @@ class PostManager(Manager):
 	def updated(self, **kwargs):
 		"""Returns a list of blog posts which have been updated."""
 		return self.published(**kwargs).extra(where=['date_modified > published']).order_by('-date_modified')
+	
+	def archvie_year(self, date, **kwargs):
+		"""Returns a list of blog posts for a given year."""
+		return self.public(published__year=date.year)
+	
+	def archive_month(self, date, **kwargs):
+		"""Returns a list of blog posts for a given month."""
+		return self.public(published__month=date.month, published__year=date.year)
+	
+	def archive_day(self, date, **kwargs):
+		"""Returns a list of blog posts for a given day."""
+		return self.public(published__day=date.day, published__month=date.month, published__year=date.year)
+	
+	def get_post(self, slug, date=None, **kwargs):
+		"""Returns a blog post.
+		
+		:arg slug: The slug of the blog post.
+		:arg date: The date the blog post was published.
+		"""
+		if date:
+			return self.get(published__range=(datetime.datetime.combine(date, datetime.time.min), datetime.datetime.combine(date, datetime.time.max)), slug__iexact=slug)
+		else:
+			return self.get(slug__iexact=slug)
 	
 	def search(self, search_terms):
 		"""Search the current published blog posts for a term in the title and
