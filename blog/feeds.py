@@ -28,7 +28,7 @@ class BaseFeed(Feed):
 		return u"%s" % (item.author.email)
 	
 	def item_author_link(self, item):
-		return reverse('blog_authors_detail', args=[obj.username,])
+		return reverse('blog_authors_detail', args=[item.author.username,])
 	
 	def item_categories(self, item):
 		return item.tags.all()
