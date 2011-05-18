@@ -33,3 +33,6 @@ build/
 # nose stuff
 .achievements
 .coverage
+
+# tox stuff
+.tox/
