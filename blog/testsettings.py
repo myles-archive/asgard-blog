@@ -12,9 +12,11 @@ INSTALLED_APPS = [
 	'django.contrib.sites',
 	'django.contrib.sitemaps',
 	
+	'south',
 	'django_markup',
 	'taggit',
 	
 	'blog',
 ]
 ROOT_URLCONF = 'blog.testurls'
+BLOG_MULTIPLE_SITES = True

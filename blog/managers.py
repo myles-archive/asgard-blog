@@ -3,12 +3,23 @@ import operator
 
 from django.db.models import Manager, Q
 
+from blog.settings import BLOG_MULTIPLE_SITES
+
+if BLOG_MULTIPLE_SITES:
+	from django.contrib.sites.models import Site
+	current_site = Site.objects.get_current()
+else:
+	current_site = None
+
 class PostManager(Manager):
 	"""
 	Same as above but for templates
 	"""
 	def get_query_set(self):
-		return super(PostManager, self).get_query_set()
+		if current_site:
+			return super(PostManager, self).get_query_set().filter(sites__in=[current_site,])
+		else:
+			return super(PostManager, self).get_query_set()
 	
 	def published(self, **kwargs):
 		"""Returns a list of published blog posts which status is 'Public' and

@@ -1,3 +1,4 @@
 BeautifulSoup
 django-taggit
 django-markup
+South

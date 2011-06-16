@@ -7,9 +7,10 @@ from django.shortcuts import render_to_response
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from blog.models import Post, Category
+from blog.settings import BLOG_PAGINATE_BY
 from blog.forms import STOP_WORDS, BlogSearchForm
 
-def index(request, page=1, count=5, context={}, template_name='blog/index.html'):
+def index(request, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/index.html'):
 	"""
 	Blog index page.
 	"""
@@ -40,7 +41,7 @@ def archive(request, context={}, template_name='blog/archive.html'):
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def archive_year(request, year, page=1, context={}, template_name='blog/archive_year.html'):
+def archive_year(request, year, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/archive_year.html'):
 	this_year = datetime.date(int(year), 1, 1)
 	
 	posts = Post.objects.archvie_year(this_year).select_related()
@@ -58,7 +59,7 @@ def archive_year(request, year, page=1, context={}, template_name='blog/archive_
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def archive_month(request, year, month, page=1, context={}, template_name='blog/archive_month.html'):
+def archive_month(request, year, month, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/archive_month.html'):
 	try:
 		date = datetime.date(*time.strptime(year+month, '%Y%b')[:3])
 	except ValueError:
@@ -85,7 +86,7 @@ def archive_month(request, year, month, page=1, context={}, template_name='blog/
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def archive_day(request, year, month, day, page=1, context={}, template_name='blog/archive_day.html'):
+def archive_day(request, year, month, day, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/archive_day.html'):
 	try:
 		date = datetime.date(*time.strptime(year+month+day, '%Y%b%d')[:3])
 	except ValueError:
@@ -133,7 +134,7 @@ def category_list(request, context={}, template_name='blog/category_list.html'):
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def category_detail(request, slug, page=1, count=5, context={}, template_name='blog/category_detail.html'):
+def category_detail(request, slug, page=1, count=BLOG_PAGINATE_BY, count=BLOG_PAGINATE_BY, context={}, template_name='blog/category_detail.html'):
 	try:
 		category = Category.objects.get(slug__iexact=slug)
 	except Category.DoesNotExist:
@@ -166,7 +167,7 @@ def author_list(request, context={}, template_name='blog/author_list.html'):
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def author_detail(request, username, page=1, count=5, context={}, template_name="blog/author_detail.html"):
+def author_detail(request, username, page=1, count=BLOG_PAGINATE_BY, context={}, template_name="blog/author_detail.html"):
 	try:
 		author = User.objects.get(username__iexact=username)
 	except User.DoesNotExist:
@@ -199,7 +200,7 @@ def tag_list(request, context={}, template_name='blog/tag_list.html'):
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def tag_detail(request, slug, page=1, count=5, context={}, template_name='blog/tag_detail.html'):
+def tag_detail(request, slug, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/tag_detail.html'):
 	tag = Post.tags.get(slug=slug)
 	post_list = Post.objects.filter(tags__in=[tag])
 	

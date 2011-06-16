@@ -1,11 +1,15 @@
 from django.db import models
 from django.db.models import permalink
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.contrib.contenttypes import generic
 from django.contrib.comments.models import Comment
 from django.utils.translation import ugettext_lazy as _
 
-from taggit.managers import TaggableManager
+try:
+	from taggit.managers import TaggableManager
+except ImportError:
+	TaggableManager = False
 
 try:
 	from django_markup.fields import MarkupField
@@ -50,7 +54,9 @@ class Post(models.Model):
 	status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=1)
 	
 	categories = models.ManyToManyField(Category, blank=True, null=True)
-	tags = TaggableManager()
+	
+	if TaggableManager:
+		tags = TaggableManager()
 	
 	tease = models.TextField(_('tease'), blank=True, null=True)
 	
@@ -58,6 +64,8 @@ class Post(models.Model):
 
 	if MarkupField:
 		markup = MarkupField(default='none')
+	
+	sites = models.ManyToManyField(Site, blank=True, null=True)
 	
 	allow_pings = models.BooleanField(_('Allow Pings'), default=True)
 	send_pings = models.BooleanField(_('Send Pings'), default=True)
