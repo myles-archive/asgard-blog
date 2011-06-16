@@ -7,11 +7,11 @@ Requirements
 ************
 
  * Django_ >= 1.1
- * `Django Taggit`_ >= 0.4.0
 
 **Optional**
 
  * `Django Markup`_ >= 0.3.0
+ * `Django Taggit`_ >= 0.4.0
  * BeautifulSoup_
 
 .. _Django: http://djangoproject.org/
