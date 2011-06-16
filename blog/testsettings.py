@@ -19,4 +19,4 @@ INSTALLED_APPS = [
 	'blog',
 ]
 ROOT_URLCONF = 'blog.testurls'
-BLOG_MULTIPLE_SITES = True
+# BLOG_MULTIPLE_SITES = True

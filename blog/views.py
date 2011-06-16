@@ -134,7 +134,7 @@ def category_list(request, context={}, template_name='blog/category_list.html'):
 	
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
-def category_detail(request, slug, page=1, count=BLOG_PAGINATE_BY, count=BLOG_PAGINATE_BY, context={}, template_name='blog/category_detail.html'):
+def category_detail(request, slug, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/category_detail.html'):
 	try:
 		category = Category.objects.get(slug__iexact=slug)
 	except Category.DoesNotExist:
