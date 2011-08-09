@@ -50,9 +50,6 @@ class BlogPostFeed(BaseFeed):
 	
 	def items(self):
 		return Post.objects.published()[:10]
-	
-	def item_link(self, item):
-		return item.get_absolute_url()
 
 class BlogCategoryPostFeed(BaseFeed):
 	def get_object(self, bits):
@@ -68,9 +65,6 @@ class BlogCategoryPostFeed(BaseFeed):
 	
 	def items(self, obj):
 		return obj.post_set.published()
-	
-	def item_link(self, item):
-		return item.get_absolute_url()
 
 class BlogTagPostFeed(BaseFeed):
 	def get_object(self, bits):
@@ -86,9 +80,6 @@ class BlogTagPostFeed(BaseFeed):
 	
 	def items(self, obj):
 		return Post.objects.published(tags__in=[obj])
-	
-	def item_link(self, item):
-		return item.get_absolute_url()
 
 class BlogAuthorPostFeed(BaseFeed):
 	def get_object(self, bits):
@@ -109,6 +100,17 @@ class BlogAuthorPostFeed(BaseFeed):
 	
 	def items(self, obj):
 		return Post.objects.published(author=obj)
+
+class BlogUpdatedPostFeed(BaseFeed):
+	title = u"%s: weblog entries that were recently updated." % current_site.name
 	
-	def item_link(self, item):
-		return item.get_absolute_url()
+	description_template = 'feeds/blog_post_updated_description.html'
+	
+	def link(self):
+		return reverse('blog_updated')
+	
+	def items(self):
+		return Post.objects.updated()[:10]
+	
+	def item_pubdate(self, item):
+		return item.date_modified

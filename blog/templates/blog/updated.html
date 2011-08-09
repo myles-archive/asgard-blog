@@ -10,7 +10,9 @@
 	<ul id="blog_posts">
 	{% for post in posts %}
 		<li>
-			<a href="{{ post.get_absolute_url }}">{{ post.title }}</a> was originally <strong>published on {{ post.published|date }}</strong> but was <strong>updated on {{ post.date_modified|date }}</strong>.
+			<a href="{{ post.get_absolute_url }}">{{ post.title }}</a> was originally
+			<strong>published on {{ post.published|date }} at {{ post.published|time }}</strong>
+			but was <strong>updated on {{ post.date_modified|date }} at {{ post.date_modified|time }}</strong>.
 		</li>
 	{% endfor %}
 	</ul>

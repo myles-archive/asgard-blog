@@ -1,0 +1,6 @@
+<p>
+	<a href="{{ post.get_absolute_url }}">{{ post.title }}</a> was originally
+	<strong>published on {{ post.published|date }} at {{ post.published|time }}</strong>
+	but was <strong>updated on {{ post.date_modified|date }}
+	at {{ post.date_modified|time }}</strong>.
+</p>
