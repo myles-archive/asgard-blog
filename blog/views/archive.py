@@ -75,24 +75,7 @@ class BlogPostMonthArchiveView(TemplateResponseMixin, ContextMixin, View):
 		posts = Post.objects.archive_month(date).select_related()
 
 		first_day = date.replace(day=1)
-		if first_day.month == 12:
-			last_day = first_day.replace(year=first_day.year + 1, month=1)
-		else:
-			last_day = first_day.replace(month=first_day.month + 1)
-		
-		next_month = last_day + datetime.timedelta(days=1)
-		prev_month = first_day - datetime.timedelta(days=-1)
 
-		context = self.get_context_data()
-
-		context = {
-			'post_list': posts,
-			'this_month': date,
-			'next_month': next_month,
-			'prev_month': prev_month,
-		}
-
-		return self.render_to_response(context)
 
 class BlogPostWeekArchiveView(TemplateResponseMixin, ContextMixin, View):
 
@@ -119,77 +102,6 @@ class BlogPostWeekArchiveView(TemplateResponseMixin, ContextMixin, View):
 			'this_week': date,
 			'next_week': next_week,
 			'prev_week': prev_week,
-		}
-
-		return self.render_to_response(context)
-
-class BlogPostWeekDayArchiveView(TemplateResponseMixin, ContextMixin, View):
-
-	context_object_name = "post_list"
-	template_name = "blog/archive/week.html"
-	paginate_by = BLOG_PAGINATE_BY
-	
-	def get_context_data(self, **kwargs):
-		context = super(BlogPostWeekArchiveView, self).get_context_data(**kwargs)
-		context['this_week'] = self.this_week
-		context['next_week'] = self.this_week + datetime.timedelta(days=8)
-		context['prev_week'] = self.this_week - datetime.timedelta(days=-8)
-		return context
-	
-	def get_queryset(self):
-		try:
-			tt = time.strptime(self.kwargs['year']+'-0-'+self.kwargs['week'], '%Y-%W-%U')
-			self.this_week = datetime.date(*tt[:3])
-		except ValueError:
-			raise Http404
-		
-		first_day = self.this_week
-		last_day = first_day + datetime.timedelta(days=7)
-		
-		return Post.objects.archive_week(first_day, last_day).select_related()
-
-class BlogPostWeekDayArchiveView(ListView):
-	
-	context_object_name = "post_list"
-	template_name = "blog/archive/day.html"
-	paginate_by = BLOG_PAGINATE_BY
-	
-	def get_context_data(self, **kwargs):
-		context = super(BlogPostWeekDayArchiveView, self).get_context_data(**kwargs)
-		
-		return context
-	
-	def get_queryset(self):
-		try:
-			self.this_day = datetime.date(*time.strptime("%s-%s-%s" % (self.kwargs['year'], self.kwargs['week'], self.kwargs['weekday']), '%Y-%U-%a')[:3])
-		except ValueError:
-			raise Http404
-		
-		return Post.objects.archive_day(self.this_day).select_related()
-
-class BlogPostDayArchiveView(ListView):
-	context_object_name = "post_list"
-	template_name = "blog/archive/day.html"
-
-	def get(self, request, year, week, weekday, *args, **kwargs):
-		try:
-			tt = time.strptime("%s-%s-%s" % (year, week, weekday), '%Y-%U-%a')
-			this_day = datetime.date(*tt[:3])
-		except ValueError:
-			raise Http404
-
-		next_day = this_day + datetime.timedelta(days=+1)
-		prev_day = this_day - datetime.timedelta(days=-1)
-
-		posts = Post.objects.archive_day(this_day).select_related()
-
-		context = self.get_context_data()
-
-		context = {
-			'post_list': posts,
-			'this_day': this_day,
-			'next_day': next_day,
-			'prev_day': prev_day,
 		}
 
 		return self.render_to_response(context)
