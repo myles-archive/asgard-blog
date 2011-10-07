@@ -9,6 +9,25 @@
 {% block content %}
 	<table id="archive">
 		<thead>
+			<th>Year</th>
+			<th colspan="12">Months</th>
+		</thead>
+		<tbody>
+			{% for year, months in archive.items %}
+			<tr>
+				<th>{{ year.year }}</th>
+				{% for month in months %}
+				<td>
+					<a href="{% url blog_archive_month month.year month|date:"b" %}">
+						{{ month|date:"F" }}
+					</a>
+				</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</tbody>
+		
+		<thead>
 		{% for year in years %}
 			<th><a href="{% url blog_archive_year year.year %}">{{ year.year }}</a></th>
 		{% endfor %}
