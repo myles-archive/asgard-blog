@@ -63,6 +63,50 @@ class BlogPostMonthArchiveView(ListView):
 		
 		return Post.objects.archive_month(self.this_month).select_related()
 
+class BlogPostWeekArchiveView(ListView):
+	
+	context_object_name = "post_list"
+	template_name = "blog/archive/week.html"
+	paginate_by = BLOG_PAGINATE_BY
+	
+	def get_context_data(self, **kwargs):
+		context = super(BlogPostWeekArchiveView, self).get_context_data(**kwargs)
+		context['this_week'] = self.this_week
+		context['next_week'] = self.this_week + datetime.timedelta(days=8)
+		context['prev_week'] = self.this_week - datetime.timedelta(days=-8)
+		return context
+	
+	def get_queryset(self):
+		try:
+			tt = time.strptime(self.kwargs['year']+'-0-'+self.kwargs['week'], '%Y-%W-%U')
+			self.this_week = datetime.date(*tt[:3])
+		except ValueError:
+			raise Http404
+		
+		first_day = self.this_week
+		last_day = first_day + datetime.timedelta(days=7)
+		
+		return Post.objects.archive_week(first_day, last_day).select_related()
+
+class BlogPostWeekDayArchiveView(ListView):
+	
+	context_object_name = "post_list"
+	template_name = "blog/archive/day.html"
+	paginate_by = BLOG_PAGINATE_BY
+	
+	def get_context_data(self, **kwargs):
+		context = super(BlogPostWeekDayArchiveView, self).get_context_data(**kwargs)
+		
+		return context
+	
+	def get_queryset(self):
+		try:
+			self.this_day = datetime.date(*time.strptime("%s-%s-%s" % (self.kwargs['year'], self.kwargs['week'], self.kwargs['weekday']), '%Y-%U-%a')[:3])
+		except ValueError:
+			raise Http404
+		
+		return Post.objects.archive_day(self.this_day).select_related()
+
 class BlogPostDayArchiveView(ListView):
 	context_object_name = "post_list"
 	template_name = "blog/archive/day.html"
