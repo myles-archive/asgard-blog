@@ -4,6 +4,13 @@ from blog import feeds
 from blog import views
 
 urlpatterns = patterns('',
+	url(r'^(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<day>\w{1,2})/(?P<slug>[-\w]+)/$',
+		view = views.BlogPostDeatilView.as_view(),
+		name = 'blog_post_detail',
+	),
+	# 
+	# Archive
+	#
 	url(r'^updated/feed/$',
 		view = feeds.BlogUpdatedPostFeed(),
 		name = 'blog_updated_post_feed',
@@ -12,17 +19,53 @@ urlpatterns = patterns('',
 		view = feeds.BlogPostFeed(),
 		name = 'blog_post_feed',
 	),
+	
+	#
+	# Tag
+	#
 	url(r'^tag/(?P<slug>(.*))/feed/$',
 		view = feeds.BlogTagPostFeed(),
 		name = 'blog_tag_post_feed',
 	),
+	
+	#
+	# Category
+	# 
 	url(r'^category/(?P<slug>[-\w]+)/feed/$',
 		view = feeds.BlogCategoryPostFeed(),
 		name = 'blog_category_post_feed'
 	),
+	url(r'^category/(?P<slug>[-\w]+)/page/(?P<page>\d+)/$',
+		view = views.BlogCategoryDetailView.as_view(),
+		name = 'blog_categories_detail_paginated',
+	),
+	url(r'^category/(?P<slug>[-\w]+)/$',
+		view = views.BlogCategoryDetailView.as_view(),
+		name = 'blog_categories_detail',
+	),
+	url(r'^category/$',
+		view = views.BlogCategoryListView.as_view(),
+		name = 'blog_categories_list',
+	),
+	
+	#
+	# Author
+	#
 	url(r'^author/(?P<username>[-\w]+)/feed/$',
 		view = feeds.BlogAuthorPostFeed(),
 		name = 'blog_author_post_feed'
+	),
+	
+	#
+	# Index
+	#
+	url(r'^page/(?P<page>\d+)/$',
+		view = views.BlogPostListView.as_view(),
+		name = 'blog_index_paginated',
+	),
+	url(r'^$',
+		view = views.BlogPostListView.as_view(),
+		name = 'blog_index',
 	),
 )
 
@@ -91,16 +134,4 @@ urlpatterns += patterns('blog.views.old_views',
 		view = 'archive',
 		name = 'blog_archive'
 	),
-	url(r'^page/(?P<page>\d+)/$',
-		view = 'index',
-		name = 'blog_index_paginated',
-	),
-	url(r'^$',
-		view = views.BlogPostListView.as_view(),
-		name = 'blog_index',
-	),
-	#url(r'^$',
-	#	view = 'index',
-	#	name = 'blog_index',
-	#),
 )
