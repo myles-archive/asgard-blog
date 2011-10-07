@@ -8,7 +8,7 @@
 
 {% block content %}
 	<ul id="blog_posts">
-	{% for post in posts %}
+	{% for post in post_list %}
 		<li>
 			<a href="{{ post.get_absolute_url }}">{{ post.title }}</a> was originally
 			<strong>published on {{ post.published|date }} at {{ post.published|time }}</strong>

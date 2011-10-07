@@ -5,12 +5,18 @@ from django.views.generic import ListView, DetailView
 from blog.models import Post
 from blog.settings import BLOG_PAGINATE_BY
 from blog.views.category import BlogCategoryDetailView, BlogCategoryListView
+from blog.views.archive import BlogPostYearArchiveView, BlogPostMonthArchiveView, BlogPostDayArchiveView, BlogPostUpdatedArchiveView, BlogPostArchiveView
 
 __all__ = [
 	'BlogPostListView',
 	'BlogPostDeatilView',
 	'BlogCategoryListView',
 	'BlogCategoryDetailView',
+	'BlogPostYearArchiveView',
+	'BlogPostMonthArchiveView',
+	'BlogPostDayArchiveView',
+	'BlogPostUpdatedArchiveView',
+	'BlogPostArchiveView',
 ]
 
 class BlogPostListView(ListView):
