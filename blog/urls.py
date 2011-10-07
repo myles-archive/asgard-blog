@@ -41,6 +41,14 @@ urlpatterns = patterns('',
 	),
 	
 	#
+	# Search
+	#
+	url(r'^search/$',
+		view = views.BlogPostSearchFormListView.as_view(),
+		name = 'blog_archive',
+	),
+	
+	#
 	# Tag
 	#
 	url(r'^tag/(?P<slug>(.*))/feed/$',
