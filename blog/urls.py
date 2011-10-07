@@ -1,31 +1,32 @@
 from django.conf.urls.defaults import patterns, url
 
-from blog.feeds import BlogPostFeed, BlogCategoryPostFeed, BlogTagPostFeed, BlogAuthorPostFeed, BlogUpdatedPostFeed
+from blog import feeds
+from blog import views
 
 urlpatterns = patterns('',
 	url(r'^updated/feed/$',
-		view = BlogUpdatedPostFeed(),
+		view = feeds.BlogUpdatedPostFeed(),
 		name = 'blog_updated_post_feed',
 	),
 	url(r'^feed/$',
-		view = BlogPostFeed(),
+		view = feeds.BlogPostFeed(),
 		name = 'blog_post_feed',
 	),
 	url(r'^tag/(?P<slug>(.*))/feed/$',
-		view = BlogTagPostFeed(),
+		view = feeds.BlogTagPostFeed(),
 		name = 'blog_tag_post_feed',
 	),
 	url(r'^category/(?P<slug>[-\w]+)/feed/$',
-		view = BlogCategoryPostFeed(),
+		view = feeds.BlogCategoryPostFeed(),
 		name = 'blog_category_post_feed'
 	),
 	url(r'^author/(?P<username>[-\w]+)/feed/$',
-		view = BlogAuthorPostFeed(),
+		view = feeds.BlogAuthorPostFeed(),
 		name = 'blog_author_post_feed'
 	),
 )
 
-urlpatterns += patterns('blog.views',
+urlpatterns += patterns('blog.views.old_views',
 	url(r'^(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<day>\w{1,2})/(?P<slug>[-\w]+)/$',
 		view = 'detail',
 		name = 'blog_post_detail',
@@ -95,7 +96,11 @@ urlpatterns += patterns('blog.views',
 		name = 'blog_index_paginated',
 	),
 	url(r'^$',
-		view = 'index',
+		view = views.BlogPostListView.as_view(),
 		name = 'blog_index',
 	),
+	#url(r'^$',
+	#	view = 'index',
+	#	name = 'blog_index',
+	#),
 )
