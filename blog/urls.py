@@ -91,6 +91,18 @@ urlpatterns = patterns('',
 		view = feeds.BlogAuthorPostFeed(),
 		name = 'blog_author_post_feed'
 	),
+	url(r'^author/(?P<username>[-\w]+)/page/(?P<page>\d+)/$',
+		view = views.BlogPostAuthorDetailView.as_view(),
+		name = 'blog_authors_detail_paginated',
+	),
+	url(r'^author/(?P<username>[-\w]+)/$',
+		view = views.BlogPostAuthorDetailView.as_view(),
+		name = 'blog_authors_detail',
+	),
+	url(r'^author/$',
+		view = views.BlogPostAuthorListView.as_view(),
+		name = 'blog_authors_list'
+	),
 	
 	#
 	# Index

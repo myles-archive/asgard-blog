@@ -7,6 +7,7 @@ from blog.settings import BLOG_PAGINATE_BY
 from blog.views.category import BlogCategoryDetailView, BlogCategoryListView
 from blog.views.archive import BlogPostYearArchiveView, BlogPostMonthArchiveView, BlogPostWeekArchiveView, BlogPostWeekDayArchiveView, BlogPostDayArchiveView, BlogPostUpdatedArchiveView, BlogPostArchiveView
 from blog.views.search import BlogPostSearchFormListView
+from blog.views.author import BlogPostAuthorListView, BlogPostAuthorDetailView
 
 __all__ = [
 	'BlogPostListView',
@@ -21,6 +22,8 @@ __all__ = [
 	'BlogPostUpdatedArchiveView',
 	'BlogPostArchiveView',
 	'BlogPostSearchFormListView',
+	'BlogPostAuthorListView',
+	'BlogPostAuthorDetailView'
 ]
 
 class BlogPostListView(ListView):
