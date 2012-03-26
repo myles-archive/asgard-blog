@@ -6,6 +6,16 @@ from django.views.generic import TemplateView, ListView
 from blog.models import Post
 from blog.settings import BLOG_PAGINATE_BY
 
+__all__ = [
+	'BlogPostYearArchiveView',
+	'BlogPostMonthArchiveView',
+	'BlogPostWeekArchiveView',
+	'BlogPostWeekDayArchiveView',
+	'BlogPostDayArchiveView',
+	'BlogPostUpdatedArchiveView',
+	'BlogPostArchiveView'
+]
+
 class BlogPostArchiveView(TemplateView):
 	
 	template_name = "blog/archive/archive.html"

@@ -3,6 +3,11 @@ from django.views.generic import ListView
 from blog.models import Post, Category
 from blog.settings import BLOG_PAGINATE_BY
 
+__all__ = [
+	'BlogCategoryDetailView',
+	'BlogCategoryListView'
+]
+
 class BlogCategoryListView(ListView):
 	
 	context_object_name = "category_list"

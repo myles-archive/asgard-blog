@@ -3,7 +3,10 @@ from blog.models import Post, Category
 from django.utils.translation import ugettext_lazy as _
 
 class PostAdmin(admin.ModelAdmin):
-	list_display = ('title', 'published', 'status_boolean', 'allow_pings', 'allow_comments', '_get_tags', '_get_categories',)
+	list_display = (
+		'title', 'published', 'status_boolean', 'allow_pings', 'allow_comments',
+		'_get_tags', '_get_categories',
+	)
 	list_filter = ('published', 'status',)
 	filter_horizontal = ('categories',)
 	prepopulated_fields = {'slug': ('title',)}
