@@ -11,7 +11,7 @@ __all__ = [
 ]
 
 class BlogPostAuthorListView(TemplateResponseMixin, ContextMixin, View):
-
+	
 	template_name = "blog/author/list.html"
 
 	def get(self, request, *args, **kwargs):

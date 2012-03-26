@@ -19,7 +19,6 @@ from blog.views.author import (
 	BlogPostAuthorListView, BlogPostAuthorDetailView
 )
 from blog.views.search import BlogPostSearchFormListView
-<<<<<<< HEAD
 from blog.views.tag import (
 	BlogTagListView, BlogTagDetailView
 )
@@ -44,25 +43,6 @@ __all__ = [
 	'index', 'archive', 'archive_year', 'archive_month', 'archive_day', 'detail',
 	'category_list', 'category_detail', 'author_list', 'author_detail',
 	'tag_list', 'tag_detail', 'search', 'updated'
-=======
-from blog.views.author import BlogPostAuthorListView, BlogPostAuthorDetailView
-
-__all__ = [
-	'BlogPostListView',
-	'BlogPostDeatilView',
-	'BlogCategoryListView',
-	'BlogCategoryDetailView',
-	'BlogPostYearArchiveView',
-	'BlogPostMonthArchiveView',
-	'BlogPostWeekArchiveView',
-	'BlogPostWeekDayArchiveView',
-	'BlogPostDayArchiveView',
-	'BlogPostUpdatedArchiveView',
-	'BlogPostArchiveView',
-	'BlogPostSearchFormListView',
-	'BlogPostAuthorListView',
-	'BlogPostAuthorDetailView'
->>>>>>> Got author urls working.
 ]
 
 class BlogPostListView(TemplateResponseMixin, ContextMixin, View):
