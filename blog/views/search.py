@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 class BlogPostSearchFormListView(TemplateResponseMixin, ContextMixin, View):
-		
+	
 	template_name = "blog/search.html"
 
 	def get(self, request, *args, **kwargs):

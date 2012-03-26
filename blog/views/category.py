@@ -10,7 +10,7 @@ __all__ = [
 ]
 
 class BlogCategoryListView(TemplateResponseMixin, ContextMixin, View):
-		
+
 	template_name = "blog/category/list.html"
 
 	def get(self, request, *args, **kwargs):
