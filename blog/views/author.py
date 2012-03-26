@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 from blog.models import Post
 from blog.settings import BLOG_PAGINATE_BY
 
+__all__ = [
+	'BlogPostAuthorListView',
+	'BlogPostAuthorDetailView'
+]
+
 class BlogPostAuthorListView(ListView):
 	
 	context_object_name = "authors"

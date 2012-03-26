@@ -6,6 +6,10 @@ from blog.models import Post
 from blog.settings import BLOG_PAGINATE_BY
 from blog.forms import STOP_WORDS, BlogSearchForm
 
+__all__ = [
+	'BlogPostSearchFormListView',
+]
+
 class BlogPostSearchFormListView(ListView):
 	
 	context_object_name = "post_list"

@@ -4,10 +4,11 @@ from django.views.generic import ListView, DetailView
 
 from blog.models import Post
 from blog.settings import BLOG_PAGINATE_BY
-from blog.views.category import BlogCategoryDetailView, BlogCategoryListView
-from blog.views.archive import BlogPostYearArchiveView, BlogPostMonthArchiveView, BlogPostWeekArchiveView, BlogPostWeekDayArchiveView, BlogPostDayArchiveView, BlogPostUpdatedArchiveView, BlogPostArchiveView
-from blog.views.search import BlogPostSearchFormListView
-from blog.views.author import BlogPostAuthorListView, BlogPostAuthorDetailView
+
+from blog.views.search import *
+from blog.views.author import *
+from blog.views.archive import *
+from blog.views.category import *
 
 __all__ = [
 	'BlogPostListView',
