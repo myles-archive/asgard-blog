@@ -58,7 +58,7 @@ setup(
 	author_email = 'me@mylesbraithwaite.com',
 	
 	description = 'A simple Blog application for the Asgard CMS system.',
-	long_description = read('README'),
+	long_description = read('README.rst'),
 	
 	license = 'BSD License',
 	
