@@ -9,7 +9,7 @@
 {% block content %}
 	<ul id="blog_tags" class="tag_cloud">
 		{% for tag in tags %}
-			<li><a href="{% url blog_tags_detail tag.slug %}" rel="tag">{{ tag }}</a></li>
+			<li><a href="{% url 'blog_tags_detail' tag.slug %}" rel="tag">{{ tag }}</a></li>
 		{% endfor %}
 	</ul>
 {% endblock %}

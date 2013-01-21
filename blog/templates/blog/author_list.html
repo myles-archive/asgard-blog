@@ -9,7 +9,7 @@
 {% block content %}
 	<ul id="blog_authors">
 		{% for author in authors %}
-			<li><a href="{% url blog_authors_detail author.username %}">{% if author.get_full_name %}{{ author.get_full_name }}{% else %}{{ author }}{% endif %}</a></li>
+			<li><a href="{% url 'blog_authors_detail' author.username %}">{% if author.get_full_name %}{{ author.get_full_name }}{% else %}{{ author }}{% endif %}</a></li>
 		{% endfor %}
 	</ul>
 {% endblock %}
