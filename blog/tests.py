@@ -127,6 +127,6 @@ class BlogTestCase(TestCase):
 		self.assertEquals(response.status_code, 200)
 	
 	def testBlogAuthorPostFeed(self):
-		response = self.client.get(reverse('blog_author_post_feed', args=['myles']))
+		response = self.client.get(reverse('blog_author_post_feed', args=['batman']))
 		self.assertEquals(response.status_code, 200)
 

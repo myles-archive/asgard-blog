@@ -1,4 +1,7 @@
-import datetime, time, re
+import re
+import time
+import datetime
+import warnings
 
 from django.http import Http404
 from django.template import RequestContext
@@ -14,6 +17,8 @@ def index(request, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='bl
 	"""
 	Blog index page.
 	"""
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	post_list = Post.objects.published().select_related()
 	paginator = Paginator(post_list, int(request.GET.get('count', count)))
 	
@@ -29,6 +34,8 @@ def index(request, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='bl
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def archive(request, context={}, template_name='blog/archive.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	posts = Post.objects.published()
 	years = posts.dates('published', 'year')
 	months = posts.dates('published', 'month')
@@ -42,6 +49,8 @@ def archive(request, context={}, template_name='blog/archive.html'):
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def archive_year(request, year, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/archive_year.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	this_year = datetime.date(int(year), 1, 1)
 	
 	posts = Post.objects.archvie_year(this_year).select_related()
@@ -60,6 +69,8 @@ def archive_year(request, year, page=1, count=BLOG_PAGINATE_BY, context={}, temp
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def archive_month(request, year, month, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/archive_month.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	try:
 		date = datetime.date(*time.strptime(year+month, '%Y%b')[:3])
 	except ValueError:
@@ -87,6 +98,8 @@ def archive_month(request, year, month, page=1, count=BLOG_PAGINATE_BY, context=
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def archive_day(request, year, month, day, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/archive_day.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	try:
 		date = datetime.date(*time.strptime(year+month+day, '%Y%b%d')[:3])
 	except ValueError:
@@ -108,6 +121,8 @@ def archive_day(request, year, month, day, page=1, count=BLOG_PAGINATE_BY, conte
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def detail(request, year, month, day, slug, context={}, template_name='blog/detail.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	try:
 		date = datetime.date(*time.strptime(year+month+day, '%Y%b%d')[:3])
 	except ValueError:
@@ -125,6 +140,8 @@ def detail(request, year, month, day, slug, context={}, template_name='blog/deta
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def category_list(request, context={}, template_name='blog/category_list.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	categories = Category.objects.all()
 	
 	context.update({
@@ -135,6 +152,8 @@ def category_list(request, context={}, template_name='blog/category_list.html'):
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def category_detail(request, slug, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/category_detail.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	try:
 		category = Category.objects.get(slug__iexact=slug)
 	except Category.DoesNotExist:
@@ -158,6 +177,8 @@ def category_detail(request, slug, page=1, count=BLOG_PAGINATE_BY, context={}, t
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def author_list(request, context={}, template_name='blog/author_list.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	authors = User.objects.filter(is_staff=True)
 	
 	context.update({
@@ -168,6 +189,8 @@ def author_list(request, context={}, template_name='blog/author_list.html'):
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def author_detail(request, username, page=1, count=BLOG_PAGINATE_BY, context={}, template_name="blog/author_detail.html"):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	try:
 		author = User.objects.get(username__iexact=username)
 	except User.DoesNotExist:
@@ -191,6 +214,8 @@ def author_detail(request, username, page=1, count=BLOG_PAGINATE_BY, context={},
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def tag_list(request, context={}, template_name='blog/tag_list.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	tags = Post.tags.all()
 	
 	context.update({
@@ -201,6 +226,8 @@ def tag_list(request, context={}, template_name='blog/tag_list.html'):
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def tag_detail(request, slug, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/tag_detail.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	tag = Post.tags.get(slug=slug)
 	post_list = Post.objects.filter(tags__in=[tag])
 	
@@ -220,6 +247,8 @@ def tag_detail(request, slug, page=1, count=BLOG_PAGINATE_BY, context={}, templa
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def search(request, context={}, template_name='blog/search.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	new_data = request.GET.copy()
 	form = BlogSearchForm(new_data)
 	if form.is_valid():
@@ -247,6 +276,8 @@ def search(request, context={}, template_name='blog/search.html'):
 	return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 def updated(request, context={}, template_name='blog/updated.html'):
+	warnings.warn("Remvoing all function based views in next release.", DeprecationWarning)
+
 	posts = Post.objects.updated()
 
 	context.update({

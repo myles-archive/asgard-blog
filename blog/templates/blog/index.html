@@ -8,18 +8,18 @@
 
 {% block content %}
 	<div id="blog_posts" class="hfeed">
-		{% for post in posts.object_list %}{% include "blog/_post.html" %}{% endfor %}
+		{% for post in post_list %}{% include "blog/_post.html" %}{% endfor %}
 	</div>
 	
-	{% if posts.has_other_pages %}
+	{% if is_paginated %}
 		<ul id="pagination">
 			{% if posts.has_previous %}
 				<li class="previous on"><a href="{% url 'blog_index_paginated' posts.previous_page_number %}" title="Page {{ posts.previous_page_number }}">Previous</a></li>
 			{% else %}
 				<li class="previous off">Previous</li>
 			{% endif %}
-			{% for page in posts.page_range %}
-				{% ifequal page posts.page_number %}
+			{% for page in page_obj.page_range %}
+				{% ifequal page page_obj.page_number %}
 					<li class="active">{{ page }}</li>
 				{% else %}
 					<li><a href="{% url 'blog_index_paginated' page %}">{{ page }}</a></li>
