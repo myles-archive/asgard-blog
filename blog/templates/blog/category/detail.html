@@ -3,18 +3,18 @@
 {% block title %}{{ block.super }}: Blog Category {{ category }}{% endblock %}
 
 {% block content_title %}
-	<h2>Blog <a href="{% url blog_categories_list %}">Category</a> {{ category }}</h2>
+	<h2>Blog <a href="{% url 'blog_categories_list' %}">Category</a> {{ category }}</h2>
 {% endblock %}
 
 {% block content %}
 	<div id="blog_posts">
-		{% for post in posts %}{% include "blog/_post.html" %}{% endfor %}
+		{% for post in post_list %}{% include "blog/_post.html" %}{% endfor %}
 	</div>
 	
 	{% if page_obj.has_other_pages %}
 		<ul id="pagination">
 			{% if page_obj.has_previous %}
-				<li class="previous on"><a href="{% url blog_categories_detail_paginated category.slug page_obj.previous_page_number %}" title="Page {{ page_obj.previous_page_number }}">Previous</a></li>
+				<li class="previous on"><a href="{% url 'blog_categories_detail_paginated' category.slug page_obj.previous_page_number %}" title="Page {{ page_obj.previous_page_number }}">Previous</a></li>
 			{% else %}
 				<li class="previous off">Previous</li>
 			{% endif %}
@@ -22,11 +22,11 @@
 				{% ifequal page page_obj.page_number %}
 					<li class="active">{{ page }}</li>
 				{% else %}
-					<li><a href="{% url blog_categories_detail_paginated category.slug page %}">{{ page }}</a></li>
+					<li><a href="{% url 'blog_categories_detail_paginated' category.slug page %}">{{ page }}</a></li>
 				{% endifequal %}
 			{% endfor %}
 			{% if page_obj.has_next %}
-				<li class="next on"><a href="{% url blog_categories_detail_paginated category.slug page_obj.next_page_number %}" title="Page {{ page_obj.next_page_number }}">Next</a></li>
+				<li class="next on"><a href="{% url 'blog_categories_detail_paginated' category.slug page_obj.next_page_number %}" title="Page {{ page_obj.next_page_number }}">Next</a></li>
 			{% else %}
 				<li class="next off">Next</li>
 			{% endif %}

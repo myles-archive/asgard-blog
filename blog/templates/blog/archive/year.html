@@ -8,6 +8,8 @@
 
 {% block content %}
 	<div id="blog_posts">
-		{% for post in post_list %}{% include "blog/_post.html" %}{% endfor %}
+		{% for post in post_list %}
+		{% include "blog/_post.html" %}
+		{% endfor %}
 	</div>
 {% endblock %}

@@ -8,7 +8,7 @@
 
 {% block content %}
 	<div class="search_form">
-		<form action="." method="get" accept-charset="utf-8">
+		<form action="{% url 'blog_search' %}" method="get" accept-charset="utf-8">
 			<p>{{ form.q }} <input type="submit" value="Search"></p>
 		</form>
 	</div>
