@@ -45,6 +45,10 @@ class PostManager(Manager):
 		"""Returns a list of blog posts for a given month."""
 		return self.public(published__month=date.month, published__year=date.year)
 	
+	def archive_week(self, first_day, last_day, **kwargs):
+		"""Returns a list of blog post for a given week."""
+		return self.public(published__gte=first_day, published__lt=last_day)
+	
 	def archive_day(self, date, **kwargs):
 		"""Returns a list of blog posts for a given day."""
 		return self.public(published__day=date.day, published__month=date.month, published__year=date.year)

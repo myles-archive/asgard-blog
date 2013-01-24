@@ -23,4 +23,5 @@ INSTALLED_APPS = [
 	'blog',
 ]
 ROOT_URLCONF = 'blog.testurls'
+SECRET_KEY = 'kz!=swngn%ifjrcru3rzovmhvbc@jlu3y5y#i=7%+--az%=+*%'
 # BLOG_MULTIPLE_SITES = True

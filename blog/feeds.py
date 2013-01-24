@@ -52,10 +52,11 @@ class BlogPostFeed(BaseFeed):
 		return Post.objects.published()[:10]
 
 class BlogCategoryPostFeed(BaseFeed):
-	def get_object(self, bits):
-		if len(bits) != 1:
+	def get_object(self, request, slug):
+		try:
+			return Category.objects.get(slug=slug)
+		except Category.DoesNotExist:
 			raise FeedDoesNotExist
-		return Category.objects.get(slug=bits[0])
 	
 	def title(self, obj):
 		return u"%s: weblog entries categorized in %s." % (current_site.name, obj.title)
@@ -67,10 +68,11 @@ class BlogCategoryPostFeed(BaseFeed):
 		return obj.post_set.published()
 
 class BlogTagPostFeed(BaseFeed):
-	def get_object(self, bits):
-		if len(bits) != 1:
+	def get_object(self, request, slug):
+		try:
+			return Post.tags.get(slug=slug)
+		except:
 			raise FeedDoesNotExist
-		return Post.tags.get(slug=bits[0])
 	
 	def title(self, obj):
 		return u"%s: weblog entries tagged in %s." % (current_site.name, obj.name)
@@ -82,11 +84,11 @@ class BlogTagPostFeed(BaseFeed):
 		return Post.objects.published(tags__in=[obj])
 
 class BlogAuthorPostFeed(BaseFeed):
-	def get_object(self, bits):
-		if len(bits) != 1:
+	def get_object(self, request, username):
+		try:
+			return User.objects.get(username__exact=username, is_staff=True)
+		except User.DoesNotExist:
 			raise FeedDoesNotExist
-		
-		return User.objects.filter(username_exact=bits[0], is_staff=True)
 	
 	def title(self, obj):
 		if obj.get_full_name():
