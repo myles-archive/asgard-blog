@@ -1,4 +1,5 @@
-from django.views.generic import ListView
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.views.generic.base import View, ContextMixin, TemplateResponseMixin
 
 from blog.models import Post, Category
 from blog.settings import BLOG_PAGINATE_BY
@@ -8,24 +9,29 @@ __all__ = [
 	'BlogCategoryListView'
 ]
 
-class BlogCategoryListView(ListView):
+class BlogCategoryListView(TemplateResponseMixin, ContextMixin, View):
 	
-	context_object_name = "category_list"
 	template_name = "blog/category/list.html"
-	
-	def get_queryset(self):
-		return Category.objects.all().select_related()
 
-class BlogCategoryDetailView(ListView):
+	def get(self, request, *args, **kwargs):
+		categories = Category.objects.all().select_related()
+
+		context = self.get_context_data(category_list=categories)
+		
+		return self.render_to_response(context)
+
+class BlogCategoryDetailView(TemplateResponseMixin, ContextMixin, View):
 	
-	context_object_name = 'posts'
 	template_name = "blog/category/detail.html"
-	paginate_by = BLOG_PAGINATE_BY
-	
-	def get_queryset(self):
+
+	def get(self, request, slug, page=1, count=BLOG_PAGINATE_BY, *args, **kwargs):
 		try:
-			self.category = Category.objects.get(slug__iexact=self.kwargs['slug'])
+			self.category = Category.objects.get(slug__iexact=slug)
 		except Category.DoesNotExist:
 			raise Http404
-		
-		return Post.objects.published(categories=self.category)
+
+		posts = Post.objects.published(categories=self.category)
+
+		context = self.get_context_data(post_list=posts)
+
+		return self.render_to_response(context)
