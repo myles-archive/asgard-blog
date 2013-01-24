@@ -6,7 +6,7 @@ A simple Blog application for the Asgard CMS system.
 Requirements
 ************
 
- * Django_ >= 1.3
+ * Django_ >= 1.5
 
 **Optional**
 
