@@ -2,6 +2,7 @@ import re
 
 from django.views.generic.base import View, ContextMixin, TemplateResponseMixin
 
+
 from blog.models import Post
 from blog.settings import BLOG_PAGINATE_BY
 from blog.forms import STOP_WORDS, BlogSearchForm
