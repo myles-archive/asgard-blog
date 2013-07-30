@@ -41,9 +41,6 @@ class BlogPostAuthorDetailView(TemplateResponseMixin, ContextMixin, View):
 		except (EmptyPage, InvalidPage):
 			posts = paginator.page(paginator.num_pages)
 		
-		context = self.get_context_data({
-			'author': author,
-			'post_list': posts,
-		})
+		context = self.get_context_data(author=author, post_list=posts)
 
 		return self.render_to_response(context)

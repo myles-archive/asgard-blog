@@ -86,7 +86,7 @@ class BlogTagPostFeed(BaseFeed):
 class BlogAuthorPostFeed(BaseFeed):
 	def get_object(self, request, username):
 		try:
-			return User.objects.get(username__exact=username, is_staff=True)
+			return User.objects.get(username=username)
 		except User.DoesNotExist:
 			raise FeedDoesNotExist
 	
