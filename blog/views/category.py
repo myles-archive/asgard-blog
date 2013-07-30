@@ -32,6 +32,9 @@ class BlogCategoryDetailView(TemplateResponseMixin, ContextMixin, View):
 
 		posts = Post.objects.published(categories=self.category)
 
-		context = self.get_context_data(post_list=posts)
+		context = self.get_context_data({
+			'category': category,
+			'post_list': posts,
+		})
 
 		return self.render_to_response(context)
