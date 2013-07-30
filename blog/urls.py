@@ -115,6 +115,7 @@ urlpatterns = patterns('',
 		view = views.BlogPostAuthorListView.as_view(),
 		name = 'blog_authors_list'
 	),
+<<<<<<< HEAD
 	
 	#
 	# Index
@@ -131,4 +132,18 @@ urlpatterns = patterns('',
 	#	view = 'index',
 	#	name = 'blog_index',
 	#),
+=======
+	url(r'^updated/$',
+		view = 'updated',
+		name = 'blog_updated',
+	),
+	url(r'^search/$',
+		view = 'search',
+		name = 'blog_search',
+	),
+	url(r'^archive/$',
+		view = 'archive',
+		name = 'blog_archive'
+	),
+>>>>>>> Added some category views.
 )

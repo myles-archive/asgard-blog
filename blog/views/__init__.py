@@ -71,7 +71,6 @@ class BlogPostDeatilView(TemplateResponseMixin, ContextMixin, View):
 			date = datetime.date(*time.strptime(year+month+day, '%Y%b%d')[:3])
 		except ValueError:
 			raise Http404
-
 		try:
 			post = Post.objects.get_post(slug, date)
 		except Post.DoesNotExist:
