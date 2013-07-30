@@ -11,7 +11,7 @@ __all__ = [
 ]
 
 class BlogPostAuthorListView(TemplateResponseMixin, ContextMixin, View):
-
+		
 	template_name = "blog/author/list.html"
 
 	def get(self, request, *args, **kwargs):
@@ -41,11 +41,6 @@ class BlogPostAuthorDetailView(TemplateResponseMixin, ContextMixin, View):
 		except (EmptyPage, InvalidPage):
 			posts = paginator.page(paginator.num_pages)
 		
-		context = self.get_context_data()
-
-		context = {
-			'author': author,
-			'posts': posts,
-		}
+		context = self.get_context_data(author=author, post_list=posts)
 
 		return self.render_to_response(context)

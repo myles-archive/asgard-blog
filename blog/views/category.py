@@ -10,7 +10,7 @@ __all__ = [
 ]
 
 class BlogCategoryListView(TemplateResponseMixin, ContextMixin, View):
-	
+
 	template_name = "blog/category/list.html"
 
 	def get(self, request, *args, **kwargs):
@@ -26,12 +26,12 @@ class BlogCategoryDetailView(TemplateResponseMixin, ContextMixin, View):
 
 	def get(self, request, slug, page=1, count=BLOG_PAGINATE_BY, *args, **kwargs):
 		try:
-			self.category = Category.objects.get(slug__iexact=slug)
+			category = Category.objects.get(slug__iexact=slug)
 		except Category.DoesNotExist:
 			raise Http404
 
-		posts = Post.objects.published(categories=self.category)
+		posts = Post.objects.published(categories=category)
 
-		context = self.get_context_data(post_list=posts)
+		context = self.get_context_data(category=category, post_list=posts)
 
 		return self.render_to_response(context)

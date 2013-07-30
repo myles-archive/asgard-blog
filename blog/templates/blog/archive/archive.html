@@ -18,7 +18,7 @@
 				<th>{{ year.year }}</th>
 				{% for month in months %}
 				<td>
-					<a href="{% url 'blog_archive_month' month.year month|date:"b" %}">
+					<a href="{% url blog_archive_month month.year month|date:"b" %}">
 						{{ month|date:"F" }}
 					</a>
 				</td>

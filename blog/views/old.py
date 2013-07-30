@@ -9,9 +9,20 @@ from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
+from django.views.generic import ListView
+
 from blog.models import Post, Category
 from blog.settings import BLOG_PAGINATE_BY
 from blog.forms import STOP_WORDS, BlogSearchForm
+
+class BlogPostListView(ListView):
+	
+	context_object_name = "post_list"
+	template_name = "blog/index.html"
+	paginate_by = BLOG_PAGINATE_BY
+	
+	def get_queryset(self):
+		return Post.objects.published().select_related()
 
 def index(request, page=1, count=BLOG_PAGINATE_BY, context={}, template_name='blog/index.html'):
 	"""
