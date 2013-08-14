@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.views.generic.base import View, ContextMixin, TemplateResponseMixin
 

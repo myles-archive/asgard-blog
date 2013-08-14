@@ -1,7 +1,18 @@
 import datetime, time
 
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.views.generic.base import View, ContextMixin, TemplateResponseMixin
+from django.http import Http404
+
+from django.core.paginator import (
+	Paginator,
+	InvalidPage,
+	EmptyPage
+)
+
+from django.views.generic.base import (
+	View,
+	ContextMixin,
+	TemplateResponseMixin
+)
 
 from blog.models import Post
 from blog.settings import BLOG_PAGINATE_BY
@@ -40,9 +51,9 @@ __all__ = [
 	'BlogPostSearchFormListView', 'BlogTagListView',
 	'BlogTagDetailView',
 
-	'index', 'archive', 'archive_year', 'archive_month', 'archive_day', 'detail',
-	'category_list', 'category_detail', 'author_list', 'author_detail',
-	'tag_list', 'tag_detail', 'search', 'updated'
+	'index', 'archive', 'archive_year', 'archive_month', 'archive_day',
+	'detail', 'category_list', 'category_detail', 'author_list',
+	'author_detail', 'tag_list', 'tag_detail', 'search', 'updated'
 ]
 
 class BlogPostListView(TemplateResponseMixin, ContextMixin, View):

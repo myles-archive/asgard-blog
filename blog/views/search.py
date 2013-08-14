@@ -1,5 +1,7 @@
 import re
 
+from django.http import Http404
+
 from django.views.generic.base import View, ContextMixin, TemplateResponseMixin
 
 
