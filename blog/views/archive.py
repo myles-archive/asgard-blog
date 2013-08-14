@@ -152,7 +152,7 @@ class BlogPostWeekArchiveView(TemplateResponseMixin, ContextMixin, View):
 
 class BlogPostDayArchiveView(TemplateResponseMixin, ContextMixin, View):
 
-	template_name = "blog/archive/day.html"
+	template_name = "blog/archive/weekday.html"
 
 	def get(self, request, year, month, day, *args, **kwargs):
 		try:
