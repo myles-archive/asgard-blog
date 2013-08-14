@@ -2,7 +2,6 @@ import time
 import datetime
 
 from django.http import Http404
-from django.utils.dateformat import DateFormat
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.views.generic.base import View, ContextMixin, TemplateResponseMixin
 
@@ -144,7 +143,7 @@ class BlogPostWeekDayArchiveView(TemplateResponseMixin, ContextMixin, View):
 		
 		context = {
 			'post_list': posts,
-			'week_number': DateFormat(this_day).W(),
+			'week_number': this_day.strftime("%U"),
 			'this_day': this_day,
 			'next_day': next_day,
 			'prev_day': prev_day,
