@@ -51,9 +51,9 @@ __all__ = [
 	'BlogPostSearchFormListView', 'BlogTagListView',
 	'BlogTagDetailView',
 
-	'index', 'archive', 'archive_year', 'archive_month', 'archive_day', 'detail',
-	'category_list', 'category_detail', 'author_list', 'author_detail',
-	'tag_list', 'tag_detail', 'search', 'updated'
+	'index', 'archive', 'archive_year', 'archive_month', 'archive_day',
+	'detail', 'category_list', 'category_detail', 'author_list',
+	'author_detail', 'tag_list', 'tag_detail', 'search', 'updated'
 ]
 
 class BlogPostListView(TemplateResponseMixin, ContextMixin, View):
