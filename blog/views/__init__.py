@@ -1,7 +1,18 @@
 import datetime, time
 
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.views.generic.base import View, ContextMixin, TemplateResponseMixin
+from django.http import Http404
+
+from django.core.paginator import (
+	Paginator,
+	InvalidPage,
+	EmptyPage
+)
+
+from django.views.generic.base import (
+	View,
+	ContextMixin,
+	TemplateResponseMixin
+)
 
 from blog.models import Post
 from blog.settings import BLOG_PAGINATE_BY
