@@ -20,6 +20,8 @@ __all__ = [
 
 class BlogPostArchiveView(TemplateResponseMixin, ContextMixin, View):
 
+    template_name = 'blog/archive/archive.html'
+
     def get(self, request, **kwargs):
         posts = Post.objects.published()
         years = posts.dates('published', 'year')
@@ -29,11 +31,13 @@ class BlogPostArchiveView(TemplateResponseMixin, ContextMixin, View):
         for year in years:
             archive[year] = Post.objects.archvie_year(year).dates('published', 'month')
 
+        context = self.get_context_data()
+
         context = {
             'archive': archive
         }
 
-        return self.render_to_response(self.get_context_data(context))
+        return self.render_to_response(context)
 
 class BlogPostYearArchiveView(TemplateResponseMixin, ContextMixin, View):
 
