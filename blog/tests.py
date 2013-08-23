@@ -105,6 +105,14 @@ class BlogTestCase(TestCase):
 	def testPostDay404(self):
 		response = self.client.get(reverse('blog_archive_day', args=[2222, 'sep', 19]))
 		self.assertEquals(response.status_code, 404)
+
+	def testPostArchive(self):
+		response = self.client.get(reverse('blog_archive'))
+		self.assertEquals(response.status_code, 200)
+
+	def testPostUpdated(self):
+		response = self.client.get(reverse('blog_updated'))
+		self.assertEquals(response.status_code, 200)
 	
 	def testTemplateTagGetLinks(self):
 		links = blog_tags.get_links(self.post.body)
