@@ -95,32 +95,6 @@ class BlogPostMonthArchiveView(TemplateResponseMixin, ContextMixin, View):
 
 		return self.render_to_response(context)
 
-class BlogPostWeekDayArchiveView(TemplateResponseMixin, ContextMixin, View):
-	
-	template_name = "blog/archive/week_day.html"
-	
-	def get(self, request, year, week, weekday, *args, **kwargs):
-		try:
-			this_day = datetime.date(*time.strptime("%s-%s-%s" % (year, week, weekday), "%Y-%U-%a")[:3])
-		except ValueError:
-			raise Http404
-		
-		next_day = this_day + datetime.timedelta(days=+1)
-		prev_day = this_day - datetime.timedelta(days=-1)
-		
-		posts = Post.objects.archive_day(this_day).select_related()
-		
-		context = self.get_context_data()
-		
-		context = {
-			'post_list': posts,
-			'this_day': this_day,
-			'next_day': next_day,
-			'prev_day': prev_day,
-		}
-		
-		return self.render_to_response(context)
-
 class BlogPostWeekArchiveView(TemplateResponseMixin, ContextMixin, View):
 
 	template_name = "blog/archive/week.html"
@@ -150,9 +124,36 @@ class BlogPostWeekArchiveView(TemplateResponseMixin, ContextMixin, View):
 
 		return self.render_to_response(context)
 
+class BlogPostWeekDayArchiveView(TemplateResponseMixin, ContextMixin, View):
+	
+	template_name = "blog/archive/weekday.html"
+	
+	def get(self, request, year, week, weekday, *args, **kwargs):
+		try:
+			this_day = datetime.date(*time.strptime("%s-%s-%s" % (year, week, weekday), "%Y-%U-%a")[:3])
+		except ValueError:
+			raise Http404
+		
+		next_day = this_day + datetime.timedelta(days=+1)
+		prev_day = this_day - datetime.timedelta(days=-1)
+		
+		posts = Post.objects.archive_day(this_day).select_related()
+		
+		context = self.get_context_data()
+		
+		context = {
+			'post_list': posts,
+			'week_number': this_day.strftime("%U"),
+			'this_day': this_day,
+			'next_day': next_day,
+			'prev_day': prev_day,
+		}
+		
+		return self.render_to_response(context)
+
 class BlogPostDayArchiveView(TemplateResponseMixin, ContextMixin, View):
 
-	template_name = "blog/archive/weekday.html"
+	template_name = "blog/archive/day.html"
 
 	def get(self, request, year, month, day, *args, **kwargs):
 		try:

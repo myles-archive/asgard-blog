@@ -64,11 +64,6 @@ setup(
 	
 	packages = packages,
 	data_files = data_files,
-	zip_safe = False,
-	
-	install_requires = [
-		'distribute',
-	],
 	
 	classifiers = [
 		'Development Status :: 4 - Beta',
