@@ -30,6 +30,8 @@ class BlogPostArchiveView(TemplateResponseMixin, ContextMixin, View):
 		posts = Post.objects.published()
 		years = posts.dates('published', 'year')
 		
+		years.sort()
+		
 		for year in years:
 			context['archive'][year] = Post.objects.archvie_year(year).dates('published', 'month')
 		
@@ -45,9 +47,15 @@ class BlogPostYearArchiveView(TemplateResponseMixin, ContextMixin, View):
 	template_name = "blog/archive/year.html"
 
 	def get(self, request, year, *args, **kwargs):
-		this_year = datetime.date(int(year), 1, 1)
+	    try:
+		    this_year = datetime.date(int(year), 1, 1)
+		except ValueError:
+		    raise Http404
 
 		posts = Post.objects.archvie_year(this_year).select_related()
+		
+		if not posts:
+		    raise Http404
 
 		next_year = this_year + datetime.timedelta(days=+366)
 		prev_year = this_year + datetime.timedelta(days=-365)
@@ -74,6 +82,9 @@ class BlogPostMonthArchiveView(TemplateResponseMixin, ContextMixin, View):
 			raise Http404
 
 		posts = Post.objects.archive_month(date).select_related()
+		
+		if not posts:
+		    raise Http404
 
 		first_day = date.replace(day=1)
 		if first_day.month == 12:
@@ -109,6 +120,9 @@ class BlogPostWeekArchiveView(TemplateResponseMixin, ContextMixin, View):
 		last_day = date + datetime.timedelta(days=7)
 
 		posts = Post.objects.archive_week(first_day, last_day).select_related()
+		
+		if not posts:
+		    raise Http404
 
 		next_week = last_day + datetime.timedelta(days=1)
 		prev_week = first_day + datetime.timedelta(days=-1)
@@ -139,6 +153,9 @@ class BlogPostWeekDayArchiveView(TemplateResponseMixin, ContextMixin, View):
 		
 		posts = Post.objects.archive_day(this_day).select_related()
 		
+		if not posts:
+		    raise Http404
+		
 		context = self.get_context_data()
 		
 		context = {
@@ -165,6 +182,9 @@ class BlogPostDayArchiveView(TemplateResponseMixin, ContextMixin, View):
 		prev_day = this_day - datetime.timedelta(days=-1)
 
 		posts = Post.objects.archive_day(this_day).select_related()
+		
+		if not posts:
+		    raise Http404
 
 		context = self.get_context_data()
 
@@ -183,9 +203,14 @@ class BlogPostUpdatedArchiveView(TemplateResponseMixin, ContextMixin, View):
 
 	def get(self, request, *args, **kwargs):
 		context = self.get_context_data()
+		
+		posts = Post.objects.updated()
+		
+		if not posts:
+		    raise Http404
 
 		context = {
-			"post_list": Post.objects.updated()
+			"post_list": posts
 		}
 
 		return self.render_to_response(context)
