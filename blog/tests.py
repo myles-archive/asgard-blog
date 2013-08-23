@@ -10,17 +10,14 @@ class BlogTestCase(TestCase):
 	
 	def setUp(self):
 		self.post = Post.objects.get(pk=1)
-		self.post.tags.add('lorem-ipsum')
-		self.post.save()
 		self.category = Category.objects.get(pk=1)
+		self.post.tags.add('lorem-ipsum')
+		self.post.categories.add(self.category)
+		self.post.save()
 		self.client = Client()
 	
 	def testPostDigitalFingerprint(self):
 		self.assertEquals(self.post.digital_fingerprint, 'c974b23eabea866720a6fc1963a6c727')
-	
-	def testCategory(self):
-		self.post.categories.add(self.category)
-		self.post.save()
 	
 	def testBlogIndex(self):
 		response = self.client.get(reverse('blog_index'))
@@ -37,6 +34,10 @@ class BlogTestCase(TestCase):
 		slug = self.post.slug
 		response = self.client.get(reverse('blog_post_detail', args=[year, month, day, slug,]))
 		self.assertEquals(response.status_code, 200)
+	
+	def testPostDetail404(self):
+	    response = self.client.get(reverse('blog_post_detail', args=[2222, 'sep', '19', 'hopefully-this-gets-not-found',]))
+	    self.assertEquals(response.status_code, 404)
 	
 	def testCategoryList(self):
 		response = self.client.get(reverse('blog_categories_list'))

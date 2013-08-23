@@ -18,8 +18,8 @@ class BlogCategoryListView(TemplateResponseMixin, ContextMixin, View):
 		categories = Category.objects.all().select_related()
 		
 		if not categories:
-		    raise Http404
-        
+			raise Http404
+		
 		context = self.get_context_data(category_list=categories)
 		
 		return self.render_to_response(context)
@@ -37,7 +37,7 @@ class BlogCategoryDetailView(TemplateResponseMixin, ContextMixin, View):
 		posts = Post.objects.published(categories=category)
 		
 		if not posts:
-		    raise Http404
+			raise Http404
 
 		context = self.get_context_data(category=category, post_list=posts)
 

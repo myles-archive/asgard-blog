@@ -2,7 +2,7 @@ from django.http import Http404
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.views.generic.base import View, ContextMixin, TemplateResponseMixin
 
-from taggit.modles import Tag
+from taggit.models import Tag
 
 from blog.models import Post
 from blog.settings import BLOG_PAGINATE_BY
@@ -19,7 +19,7 @@ class BlogTagListView(TemplateResponseMixin, ContextMixin, View):
 		tags = Post.tags.all()
 		
 		if not tags:
-		    raise Http404
+			raise Http404
 
 		context = self.get_context_data(tag_list=tags)
 		
@@ -30,16 +30,16 @@ class BlogTagDetailView(TemplateResponseMixin, ContextMixin, View):
 	template_name = 'blog/tag/detail.html'
 
 	def get(self, request, slug, page=1, count=BLOG_PAGINATE_BY, *args, **kwargs):
-        
-        try:
-		    tag = Post.tags.get(slug=slug)
-	    except Tag.DoesNotExist:
-	        raise Http404
+		
+		try:
+			tag = Post.tags.get(slug=slug)
+		except Tag.DoesNotExist:
+			raise Http404
 
 		post_list = Post.objects.filter(tags__in=[tag]).select_related()
 		
 		if not post_list:
-		    raise Http404
+			raise Http404
 
 		paginator = Paginator(post_list, int(request.GET.get('count', count)))
 
