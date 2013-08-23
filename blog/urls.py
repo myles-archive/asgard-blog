@@ -127,8 +127,4 @@ urlpatterns = patterns('',
 		view = views.BlogPostListView.as_view(),
 		name = 'blog_index',
 	),
-	#url(r'^$',
-	#	view = 'index',
-	#	name = 'blog_index',
-	#),
 )
