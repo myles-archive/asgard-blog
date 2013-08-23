@@ -10,17 +10,14 @@ class BlogTestCase(TestCase):
 	
 	def setUp(self):
 		self.post = Post.objects.get(pk=1)
-		self.post.tags.add('lorem-ipsum')
-		self.post.save()
 		self.category = Category.objects.get(pk=1)
+		self.post.tags.add('lorem-ipsum')
+		self.post.categories.add(self.category)
+		self.post.save()
 		self.client = Client()
 	
 	def testPostDigitalFingerprint(self):
 		self.assertEquals(self.post.digital_fingerprint, 'c974b23eabea866720a6fc1963a6c727')
-	
-	def testCategory(self):
-		self.post.categories.add(self.category)
-		self.post.save()
 	
 	def testBlogIndex(self):
 		response = self.client.get(reverse('blog_index'))
@@ -38,6 +35,10 @@ class BlogTestCase(TestCase):
 		response = self.client.get(reverse('blog_post_detail', args=[year, month, day, slug,]))
 		self.assertEquals(response.status_code, 200)
 	
+	def testPostDetail404(self):
+	    response = self.client.get(reverse('blog_post_detail', args=[2222, 'sep', '19', '404-error',]))
+	    self.assertEquals(response.status_code, 404)
+	
 	def testCategoryList(self):
 		response = self.client.get(reverse('blog_categories_list'))
 		self.assertEquals(response.status_code, 200)
@@ -45,6 +46,10 @@ class BlogTestCase(TestCase):
 	def testCategoryDetail(self):
 		response = self.client.get(self.category.get_absolute_url())
 		self.assertEquals(response.status_code, 200)
+
+	def testCategoryDetail404(self):
+		response = self.client.get(reverse('blog_categories_detail', args=['404-error',]))
+		self.assertEquals(response.status_code, 404)
 	
 	def testTagList(self):
 		response = self.client.get(reverse('blog_tags_list'))
@@ -54,6 +59,10 @@ class BlogTestCase(TestCase):
 		tag = self.post.tags.all()[0]
 		response = self.client.get(reverse('blog_tags_detail', args=[tag.slug,]))
 		self.assertEquals(response.status_code, 200)
+
+	def testTagDetail404(self):
+		response = self.client.get(reverse('blog_tags_detail', args=['404-error',]))
+		self.assertEquals(response.status_code, 404)
 	
 	def testAuthorList(self):
 		response = self.client.get(reverse('blog_authors_list'))
@@ -62,17 +71,29 @@ class BlogTestCase(TestCase):
 	def testAuthorDetail(self):
 		response = self.client.get(reverse('blog_authors_detail', args=['myles',]))
 		self.assertEquals(response.status_code, 200)
+
+	def testAuthorDetail404(self):
+		response = self.client.get(reverse('blog_authors_detail', args=['404-error',]))
+		self.assertEquals(response.status_code, 404)
 	
 	def testPostYear(self):
 		year = self.post.published.year
 		response = self.client.get(reverse('blog_archive_year', args=[year,]))
 		self.assertEquals(response.status_code, 200)
+
+	def testPostYear404(self):
+		response = self.client.get(reverse('blog_archive_year', args=[2222,]))
+		self.assertEquals(response.status_code, 404)
 	
 	def testPostMonth(self):
 		year = self.post.published.year
 		month = self.post.published.strftime('%b').lower()
 		response = self.client.get(reverse('blog_archive_month', args=[year, month,]))
 		self.assertEquals(response.status_code, 200)
+
+	def testPostMonth404(self):
+		response = self.client.get(reverse('blog_archive_month', args=[2222, 'sep',]))
+		self.assertEquals(response.status_code, 404)
 	
 	def testPostDay(self):
 		year = self.post.published.year
@@ -80,6 +101,10 @@ class BlogTestCase(TestCase):
 		day = self.post.published.day
 		response = self.client.get(reverse('blog_archive_day', args=[year, month, day,]))
 		self.assertEquals(response.status_code, 200)
+
+	def testPostDay404(self):
+		response = self.client.get(reverse('blog_archive_day', args=[2222, 'sep', 19]))
+		self.assertEquals(response.status_code, 404)
 	
 	def testTemplateTagGetLinks(self):
 		links = blog_tags.get_links(self.post.body)
@@ -121,11 +146,23 @@ class BlogTestCase(TestCase):
 	def testBlogCategoryPostFeed(self):
 		response = self.client.get(reverse('blog_category_post_feed', args=['lorem-ipsum']))
 		self.assertEquals(response.status_code, 200)
+
+	def testBlogCategoryPostFeed404(self):
+		response = self.client.get(reverse('blog_category_post_feed', args=['404-error']))
+		self.assertEquals(response.status_code, 404)
 	
 	def testBlogTagPostFeed(self):
 		response = self.client.get(reverse('blog_tag_post_feed', args=['lorem-ipsum']))
 		self.assertEquals(response.status_code, 200)
+
+	def testBlogTagPostFeed404(self):
+		response = self.client.get(reverse('blog_tag_post_feed', args=['404-error']))
+		self.assertEquals(response.status_code, 404)
 	
 	def testBlogAuthorPostFeed(self):
 		response = self.client.get(reverse('blog_author_post_feed', args=['myles']))
 		self.assertEquals(response.status_code, 200)
+
+	def testBlogAuthorPostFeed404(self):
+		response = self.client.get(reverse('blog_author_post_feed', args=['404-error']))
+		self.assertEquals(response.status_code, 404)

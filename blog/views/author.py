@@ -18,6 +18,9 @@ class BlogPostAuthorListView(TemplateResponseMixin, ContextMixin, View):
 	def get(self, request, *args, **kwargs):
 
 		users = User.objects.filter(is_staff=True)
+		
+		if not users:
+			raise Http404
 
 		context = self.get_context_data(author_list=users)
 

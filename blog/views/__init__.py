@@ -62,6 +62,10 @@ class BlogPostListView(TemplateResponseMixin, ContextMixin, View):
 	
 	def get(self, request, page=1, count=BLOG_PAGINATE_BY, *args, **kwargs):
 		post_list = Post.objects.published().select_related()
+		
+		if not post_list:
+			raise Http404
+		
 		paginator = Paginator(post_list, int(request.GET.get('count', count)))
 		
 		try:
@@ -82,6 +86,7 @@ class BlogPostDeatilView(TemplateResponseMixin, ContextMixin, View):
 			date = datetime.date(*time.strptime(year+month+day, '%Y%b%d')[:3])
 		except ValueError:
 			raise Http404
+		
 		try:
 			post = Post.objects.get_post(slug, date)
 		except Post.DoesNotExist:
