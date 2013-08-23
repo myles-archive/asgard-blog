@@ -51,7 +51,7 @@ for dirpath, dirnames, filenames in os.walk(blog_dir):
 
 setup(
 	name = 'asgard-blog',
-	version = blog.__version__,
+	version = blog.get_version(),
 	url = 'http://asgardproject.org/apps/blog.html',
 	
 	author = 'Myles Braithwaite',
